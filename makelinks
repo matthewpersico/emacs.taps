@@ -1,0 +1,19 @@
+# -*- sh -*-
+for src in before-init.el prefs.el after-init.el
+do
+    tgt=../../$src
+    if [ -h $tgt ]
+    then
+        echo $tgt is already a link
+    elif [ -f $tgt ]
+    then
+        echo $tgt is a file - investigate
+    else
+        echo linking $tgt to $src
+        (
+            cd ../..
+            ln -s taps/mpersico5/$src .
+            ls -la $src taps/mpersico5/$src
+        )
+    fi
+done
