@@ -107,12 +107,20 @@
 ;;; Display
 
 ;; Window and iconified title
-(setq frame-title-format (concat "emacs - (%f)"))
+(setq frame-title-format (list "emacs@"
+                               (substring (getenv "HOSTNAME")
+                                          0
+                                          (string-match-p (regexp-quote "\.") (getenv "HOSTNAME"))
+                                          )
+                               " - (%f)")
+      )
+
 
 ;;; ********************
 ;;; Perl
 (add-to-list 'auto-mode-alist '("\\.t\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
+(add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 
 ;;; **********************************
 ;;; Additional file types for spelling
@@ -305,7 +313,6 @@
  '(custom-safe-themes
    (quote
     ("6a18a817e5a1d220a8de8af5d6e5f4619fe3df61dd2cbc37b9acd8d77d42e026" "f5519676e9580060b510012ffde3b41dd5392a3debc98a2b02995499a086a7d4" default)))
- '(desktop-save-mode t)
  '(exordium-line-mode nil)
  '(explicit-shell-file-name nil)
  '(global-visual-line-mode nil)
