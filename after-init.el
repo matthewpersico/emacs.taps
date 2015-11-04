@@ -25,6 +25,13 @@
 ;;; ********************
 ;;; Key defs
 
+;; Shift backspace is pressed more by accident than anything
+;; else. Unassiginging it here seems to change it to delete-to-the-right. I can
+;; live with that.
+
+;; it to something less destructive.
+(global-set-key (kbd "S-<delete>") nil)
+
 ;; Function keys
 (global-set-key [f1]  'shell)
 (global-set-key [f8]  'start-kbd-macro)
