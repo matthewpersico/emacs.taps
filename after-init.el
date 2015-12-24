@@ -28,9 +28,10 @@
 ;; Shift backspace is pressed more by accident than anything
 ;; else. Unassiginging it here seems to change it to delete-to-the-right. I can
 ;; live with that.
-
-;; it to something less destructive.
 (global-set-key (kbd "S-<delete>") nil)
+
+;; Turn off Swoop
+(global-set-key (kbd "C-S-s") nil) ;; defaults down to C-s
 
 ;; Function keys
 (global-set-key [f1]  'shell)
@@ -39,13 +40,11 @@
 (global-set-key [f10] 'call-last-kbd-macro)
 (global-set-key [f11] 'bury-buffer) ;; buffer rotation, different from window rotation
 
-;; Enable the command `narrow-to-region' ("C-x n n"), a useful
-;; command, but possibly confusing to a new user, so it's disabled by
-;; default; we re-enable it here and rebind the default keystrokes to
-;; the caps
-(put 'narrow-to-region 'disabled nil)
-(global-set-key "\C-XN" 'narrow-to-region) ;rebind to cap
-(global-set-key "\C-xW" 'widen)         ;rebind to cap
+;; `narrow-to-region' ("C-x n n") is disabled; most likely to get invoked with
+;; those keystrokes when least expected and I never use it.
+;;(put 'narrow-to-region 'disabled nil)
+;;(global-set-key "\C-XN" 'narrow-to-region) ;rebind to cap
+;;(global-set-key "\C-xW" 'widen)         ;rebind to cap
 
 ;; next/previous window
 (global-set-key "\C-Xn" 'other-window)
@@ -291,6 +290,10 @@
   (message "Use the command sequence M-x ibuffer RET t Q"))
 
 ;; NOT BOUND
+
+;;; Might need this later:
+;;;  '(cperl-close-paren-offset -2)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -339,7 +342,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 120 :width normal))))
+ '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 100 :width normal))))
  '(cperl-array-face ((t (:foreground "yellow" :weight bold))))
  '(cperl-hash-face ((t (:foreground "Red" :slant italic :weight bold))))
  '(cursor ((t (:background "spring green"))))
