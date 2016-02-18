@@ -1,6 +1,6 @@
 ;;; prefs.el
 ;;;
-;;; Overrides for init-prefs.el.
+;;; Overrides for init-prefs.el. Called in init.el.
 ;;; Other overrides and preferences go before-init.el or after-init.el
 
 (setq exordium-preferred-fonts '(
@@ -22,3 +22,4 @@
 ;;; ...so I can summon it at a keystroke
 ;;; in init.el since the attribute to modify is
 ;;; not defined yet.
+
