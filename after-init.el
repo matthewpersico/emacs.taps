@@ -38,6 +38,9 @@
 ;; Turn off Swoop
 (global-set-key (kbd "C-S-s") nil) ;; defaults down to C-s
 
+;; Turn off annoying keystroke
+(global-set-key (kbd "C-S-a") nil)
+
 ;; Function keys
 (global-set-key [f1]  'shell)
 (global-set-key [f8]  'start-kbd-macro)
@@ -134,6 +137,10 @@
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 (require 'perltidy)
+(defun cperl-mode-hook-for-perltidy ()
+  (local-set-key (kbd "C-c t") 'perltidy-region)
+  (local-set-key (kbd "C-c C-t") 'perltidy-buffer))
+(add-hook 'cperl-mode-hook 'cperl-mode-hook-for-perltidy)
 
 ;;; **********************************
 ;;; Additional file types for spelling
@@ -142,6 +149,8 @@
 
 ;;; ********************
 ;;; Exordium overrides
+
+;;; None
 
 ;;; ********************
 ;;; Locally created functions
@@ -302,6 +311,25 @@
 ;;; imenu does not recognize foo-bar() as a function. We fix that here:
 (require 'sh-script-imode)
 
+;;; Make found search locations vertically center
+(defadvice
+    isearch-forward
+    (after isearch-forward-recenter activate)
+    (recenter))
+(ad-activate 'isearch-forward)
+
+(defadvice
+    isearch-repeat-forward
+    (after isearch-repeat-forward-recenter activate)
+    (recenter))
+(ad-activate 'isearch-repeat-forward)
+
+(defadvice
+    isearch-repeat-backward
+    (after isearch-repeat-backward-recenter activate)
+    (recenter))
+(ad-activate 'isearch-repeat-backward)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -327,7 +355,6 @@
  '(comint-scroll-to-bottom-on-input t)
  '(cperl-close-paren-offset -4)
  '(cperl-continued-statement-offset 4)
- '(cperl-hairy t)
  '(cperl-indent-level 4)
  '(cperl-indent-parens-as-block t)
  '(cperl-tab-always-indent t)
