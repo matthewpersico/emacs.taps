@@ -134,6 +134,7 @@
 ;;; Perl
 (add-to-list 'auto-mode-alist '("\\.t\\'" . cperl-mode))
 (add-to-list 'auto-mode-alist '("\\.tdy\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.deparse\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 (require 'perltidy)
@@ -312,11 +313,19 @@
 (require 'sh-script-imode)
 
 ;;; Make found search locations vertically center
+;(add-hook 'isearch-mode-end-hook 'recenter-top-bottom)
+
 (defadvice
     isearch-forward
     (after isearch-forward-recenter activate)
     (recenter))
 (ad-activate 'isearch-forward)
+
+(defadvice
+    isearch-backward
+    (after isearch-backward-recenter activate)
+    (recenter))
+(ad-activate 'isearch-backward)
 
 (defadvice
     isearch-repeat-forward
