@@ -371,6 +371,7 @@
  '(custom-safe-themes
    (quote
     ("6a18a817e5a1d220a8de8af5d6e5f4619fe3df61dd2cbc37b9acd8d77d42e026" "f5519676e9580060b510012ffde3b41dd5392a3debc98a2b02995499a086a7d4" default)))
+ '(exordium-enable-y-or-n t)
  '(exordium-line-mode nil)
  '(explicit-shell-file-name nil)
  '(global-visual-line-mode nil)
