@@ -159,6 +159,13 @@
 ;;
 ;; Quickie convenience functions and their key mappings
 ;;
+
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+(global-set-key (kbd "C-x K") 'kill-other-buffers)
+
 (defun MOP-insert-buffer-name ()
   "MOP - Insert the buffer name into the buffer at the current editing point"
   (interactive "*")
