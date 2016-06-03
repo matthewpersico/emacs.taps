@@ -22,4 +22,3 @@
 ;;; ...so I can summon it at a keystroke
 ;;; in init.el since the attribute to modify is
 ;;; not defined yet.
-

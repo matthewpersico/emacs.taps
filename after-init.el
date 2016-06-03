@@ -352,6 +352,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-trigger-key "TAB")
+ '(add-log-always-start-new-record t)
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
@@ -359,6 +360,7 @@
  '(backup-by-copying t)
  '(blink-cursor-mode nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
+ '(change-log-default-name "mopChangeLog")
  '(column-number-mode t)
  '(comint-buffer-maximum-size 20000)
  '(comint-completion-addsuffix t)
