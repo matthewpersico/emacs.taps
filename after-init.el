@@ -61,6 +61,14 @@
                    "Select the ARG'th previous different window"
                    (interactive "p")
                    (other-window (- arg))))
+;; Default function for these is unwanted and keeps asking if I want to enable
+;; it.
+(global-set-key "\C-X\C-n" 'other-window)
+(global-set-key "\C-X\C-p"
+                '(lambda (arg)
+                   "Select the ARG'th previous different window"
+                   (interactive "p")
+                   (other-window (- arg))))
 
 ;; Searching
 (global-set-key "\C-r" 'isearch-backward-regexp)
@@ -147,6 +155,7 @@
 ;;; Additional file types for spelling
 (defun turn-on-fly () (flyspell-mode 1))
 (add-hook 'markdown-mode-hook 'turn-on-fly)
+(add-hook 'change-log-mode-hook 'turn-on-fly)
 
 ;;; ********************
 ;;; Exordium overrides
@@ -197,7 +206,6 @@
       (replace-match "" nil nil)))
   (message "MOP-strip-end-whitespace complete."))
 (global-set-key "\C-x\C-z" 'delete-trailing-whitespace) ;MOP-strip-end-whitespace)
-(global-set-key "\C-z" 'delete-trailing-whitespace); MOP-strip-end-whitespace)
 
 (defun MOP-strip-start-whitespace ()
   "MOP - All leading whitespace gets chucked"
@@ -360,7 +368,7 @@
  '(backup-by-copying t)
  '(blink-cursor-mode nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
- '(change-log-default-name "mopChangeLog")
+ '(change-log-default-name "SourceCtrlLog")
  '(column-number-mode t)
  '(comint-buffer-maximum-size 20000)
  '(comint-completion-addsuffix t)
@@ -380,9 +388,11 @@
  '(custom-safe-themes
    (quote
     ("6a18a817e5a1d220a8de8af5d6e5f4619fe3df61dd2cbc37b9acd8d77d42e026" "f5519676e9580060b510012ffde3b41dd5392a3debc98a2b02995499a086a7d4" default)))
+ '(exordium-backup-files t)
  '(exordium-enable-y-or-n t)
- '(exordium-line-mode nil)
+ '(exordium-highlight-linum t)
  '(explicit-shell-file-name nil)
+ '(global-linum-mode t)
  '(global-visual-line-mode nil)
  '(imenu-sort-function (quote imenu--sort-by-name))
  '(kept-new-versions 6)
@@ -394,6 +404,7 @@
  '(tool-bar-mode nil)
  '(track-eol t)
  '(truncate-lines t)
+ '(version-control t)
  '(word-wrap nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -405,4 +416,5 @@
  '(cperl-hash-face ((t (:foreground "Red" :slant italic :weight bold))))
  '(cursor ((t (:background "spring green"))))
  '(ediff-even-diff-A ((t (:foreground "#969896" :inverse-video nil))))
- '(ediff-even-diff-B ((t (:foreground "#969896" :inverse-video nil)))))
+ '(ediff-even-diff-B ((t (:foreground "#969896" :inverse-video nil))))
+ '(linum-highlight-face ((t (:background "white smoke" :distant-foreground "black")))))
