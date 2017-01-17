@@ -143,6 +143,8 @@
 (add-to-list 'auto-mode-alist '("\\.t\\'" . cperl-mode))
 (add-to-list 'auto-mode-alist '("\\.tdy\\'" . cperl-mode))
 (add-to-list 'auto-mode-alist '("\\.deparse\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.ptkdb\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.perldb\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 (require 'perltidy)
@@ -322,6 +324,19 @@
   (message "Use the command sequence M-x ibuffer RET t Q"))
 
 ;;; ********************
+;;; My saved keyboard macros
+;;; 1) Record a macro.
+;;; 2) Name it (C-x C-k n).
+;;; 3) Edit the macros file (C-x f ~/.emacs.d/taps/mpersico5/lisp/kbmacros.el).
+;;; 4) Write the macro to the file (M-x insert-kbd-macro).
+;;; 5) Save.
+;;; 6) In order to run the macro, invoke like any other function
+;;;    (M-x name)
+;;; 7) If you name all keyboard macros starting with kbm-, then you can get
+;;;    a list of them using tab completion.
+(require 'kbmacros)
+
+;;; ********************
 ;;; Overrides
 
 ;;; imenu does not recognize foo-bar() as a function. We fix that here:
@@ -398,6 +413,8 @@
  '(kept-new-versions 6)
  '(kill-whole-line t)
  '(line-move-visual nil)
+ '(nyan-animate-nyancat t)
+ '(nyan-mode t)
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
