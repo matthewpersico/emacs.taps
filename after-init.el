@@ -326,14 +326,13 @@
 ;;; ********************
 ;;; My saved keyboard macros
 ;;; 1) Record a macro.
-;;; 2) Name it (C-x C-k n).
+;;; 2) Name it (C-x C-k n). If you name all keyboard macros starting with kbm-,
+;;;    then you can get a list of them using tab completion.
 ;;; 3) Edit the macros file (C-x f ~/.emacs.d/taps/mpersico5/lisp/kbmacros.el).
 ;;; 4) Write the macro to the file (M-x insert-kbd-macro).
 ;;; 5) Save.
 ;;; 6) In order to run the macro, invoke like any other function
 ;;;    (M-x name)
-;;; 7) If you name all keyboard macros starting with kbm-, then you can get
-;;;    a list of them using tab completion.
 (require 'kbmacros)
 
 ;;; ********************
@@ -369,6 +368,18 @@
     (recenter))
 (ad-activate 'isearch-repeat-backward)
 
+::
+;;JACOB O'DONNELL
+;;12:40:23 @matthew maybe its the auto-save-file-name-transforms dir you want
+;;12:40:24  (setq auto-save-file-name-transforms
+;;          `((".*" ,temporary-file-directory t)))
+;; <GCS>
+
+;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html#Interlocking
+;; This turns off local lock files to avoid rsync issues, but my git commit hook
+;;  checks them. So we put them back and we fix the rsync.
+;; '(create-lockfiles nil)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -381,6 +392,7 @@
  '(ansi-color-names-vector
    ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(backup-by-copying t)
+ '(backup-directory-alist (quote (("." . "~/.emacs.saves"))))
  '(blink-cursor-mode nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
  '(change-log-default-name "SourceCtrlLog")
@@ -409,12 +421,16 @@
  '(explicit-shell-file-name nil)
  '(global-linum-mode t)
  '(global-visual-line-mode nil)
+ '(imenu-max-item-length nil)
  '(imenu-sort-function (quote imenu--sort-by-name))
  '(kept-new-versions 6)
  '(kill-whole-line t)
  '(line-move-visual nil)
  '(nyan-animate-nyancat t)
  '(nyan-mode t)
+ '(package-selected-packages
+   (quote
+    (yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
