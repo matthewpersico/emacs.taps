@@ -368,13 +368,6 @@
     (recenter))
 (ad-activate 'isearch-repeat-backward)
 
-::
-;;JACOB O'DONNELL
-;;12:40:23 @matthew maybe its the auto-save-file-name-transforms dir you want
-;;12:40:24  (setq auto-save-file-name-transforms
-;;          `((".*" ,temporary-file-directory t)))
-;; <GCS>
-
 ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html#Interlocking
 ;; This turns off local lock files to avoid rsync issues, but my git commit hook
 ;;  checks them. So we put them back and we fix the rsync.
