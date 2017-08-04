@@ -46,7 +46,12 @@
 (global-set-key [f8]  'start-kbd-macro)
 (global-set-key [f9]  'end-kbd-macro)
 (global-set-key [f10] 'call-last-kbd-macro)
-(global-set-key [f11] 'bury-buffer) ;; buffer rotation, different from window rotation
+(global-set-key [f11] 'bury-buffer) ;; buffer rotation, different from window
+                                    ;; rotation
+(global-set-key (kbd "<f2> n") 'bury-buffer) ;; buffer rotation, different from
+                                             ;; window rotation. Mapped for
+                                             ;; when f11 is gobbled up by the
+                                             ;; browser of a vpn session
 
 ;; `narrow-to-region' ("C-x n n") is disabled; most likely to get invoked with
 ;; those keystrokes when least expected and I never use it.
@@ -423,7 +428,7 @@
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
+    (emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
