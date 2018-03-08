@@ -1,7 +1,7 @@
 ;;; prefs.el
 ;;;
 ;;; Overrides for init-prefs.el. Called in init.el.
-;;; Other overrides and preferences go before-init.el or after-init.el
+;;; Other overrides and preferences go in before-init.el or after-init.el
 
 (setq exordium-preferred-fonts '(
                                  ("Inconsolata" . 120)

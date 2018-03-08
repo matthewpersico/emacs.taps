@@ -23,7 +23,7 @@
     (setq mop-myHome (getenv "HOME")))))
 
 ;;; ********************
-;;; Add the taps directory as part of the load path so that I can git
+;;; Add the taps directory as part of the load path so that I can use
 ;;; extensions I like without interfering with Exordium
 (add-to-list 'load-path (concat "~/.emacs.d/taps/" (getenv "USER") "/lisp"))
 
@@ -96,6 +96,9 @@
 
 ;; Word completions
 (setq ac-set-trigger-key "TAB")
+
+;; ediff
+(setq ediff-split-window-function 'split-window-horizontally)
 
 ;; VC and diff
 (define-key vc-menu-map [vc-ediff]
@@ -428,7 +431,7 @@
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
+    (graphviz-dot-mode flycheck-bashate emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
