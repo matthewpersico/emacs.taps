@@ -1,19 +1,24 @@
-;;; after-init.el
+;;; after-init.el --- Summary
 
 ;; My stuff, post Exordium
+
+;;; Commentary:
 
 ;;; ********************
 ;;; Notes
 ;;ADAM FAANES
-;;12:05:17 What's the emacs command to put a buffer into merge mode that already has all the <<<<<<< HEAD and >>>>>> stuff in it after a conflict?
+;;12:05:17 What's the Emacs command to put a buffer into merge mode that already has all the <<<<<<< HEAD and >>>>>> stuff in it after a conflict?
 ;;12:05:39 or is there one? I seem to remember there is one...
 ;;BART SPIERS
 ;;12:05:42 M-x smerge-mode
 ;;ADAM FAANES
 ;;12:05:54 brilliant  Thanks
 
+;;; Code:
+
 ;;; ********************
 ;;; OS Setup
+(defvar mop-myHome)
 (cond
  ((string-equal system-type "windows-nt")
   (progn
@@ -94,8 +99,11 @@
 (global-set-key "\M-g" 'goto-line)
 (global-set-key "\M-G" 'goto-column)
 
+;; Confused with \C-xk when killing buffers
+(global-set-key "\C-x\C-k\r" 'ido-kill-buffer)
+
 ;; Word completions
-(setq ac-set-trigger-key "TAB")
+(ac-set-trigger-key "TAB")
 
 ;; ediff
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -134,6 +142,11 @@
 (add-hook 'sh-mode-hook 'imenu-add-menubar-index)
 
 ;;; ********************
+;;; Shell
+(require 'bash-completion)
+(bash-completion-setup)
+
+;;; ********************
 ;;; Display
 
 ;; Window and iconified title
@@ -145,6 +158,35 @@
                                " - (%f)")
       )
 
+;;; https://bbgithub.dev.bloomberg.com/bspiers5/emacs-init/blob/master/init.el#L124
+
+(defun toggle-window-split ()
+  "Rotate between vertical and horizontal split if we have two windows."
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+
+(global-set-key (kbd "C-x |") 'toggle-window-split)
 
 ;;; ********************
 ;;; Perl
@@ -162,9 +204,90 @@
 
 ;;; **********************************
 ;;; Additional file types for spelling
-(defun turn-on-fly () (flyspell-mode 1))
-(add-hook 'markdown-mode-hook 'turn-on-fly)
-(add-hook 'change-log-mode-hook 'turn-on-fly)
+(defun turn-on-flyspell () (flyspell-mode 1))
+(add-hook 'markdown-mode-hook 'turn-on-flyspell)
+(add-hook 'change-log-mode-hook 'turn-on-flyspell)
+
+;;; ********************
+;;; Flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; The following is thanks to https://github.com/flycheck/flycheck/issues/1436
+(defun shellcheck-disable-error-at-point (&optional pos)
+  "Insert a shellcheck disable directive at the current error in the code."
+  (interactive)
+  (-when-let* ((error (tabulated-list-get-id pos))
+               (buffer (flycheck-error-buffer error))
+               (id (flycheck-error-id error))
+               ;;(message (flycheck-error-message error))
+               )
+    (when (buffer-live-p buffer)
+      (if (eq (window-buffer) (get-buffer flycheck-error-list-buffer))
+          ;; When called from within the error list, keep the error list,
+          ;; otherwise replace the current buffer.
+          (pop-to-buffer buffer 'other-window)
+        (switch-to-buffer buffer))
+      (let ((pos (flycheck-error-pos error)))
+        (unless (eq (goto-char pos) (point))
+          ;; If widening gets in the way of moving to the right place, remove it
+          ;; and try again
+          (widen)
+          (goto-char pos))
+
+        ;; Move to start of line with error position.
+        (beginning-of-line-text)
+
+        ;; The only error I know of where the disable directive is AFTER the
+        ;; error position, not before.
+        (when (string-equal id "SC2148")
+              (forward-line)
+              )
+        ;; Insert the disable line
+        (insert (format "# shellcheck disable=%s\n" id))
+        ;; Indent it
+        (indent-for-tab-command))
+
+      ;; Re-highlight the errors
+      (flycheck-error-list-highlight-errors 'preserve-pos))))
+
+(define-key flycheck-error-list-mode-map (kbd "d") #'shellcheck-disable-error-at-point)
+
+;;
+;; Refine to remove the --shell option, from flycheck.el
+;;
+;; doesn't work
+;;(setf (flycheck-checker-get 'sh-shellcheck 'command)
+;;      (remove "-shell" (flycheck-checker-get 'sh-shellcheck 'command)))
+
+(flycheck-define-checker sh-shellcheck
+  "A shell script syntax and style checker using Shellcheck.
+
+See URL `https://github.com/koalaman/shellcheck/'."
+  :command ("shellcheck"
+            "--format" "checkstyle"
+            ;; "--shell" (eval (symbol-name sh-shell))
+            (option-flag "--external-sources" flycheck-shellcheck-follow-sources)
+            (option "--exclude" flycheck-shellcheck-excluded-warnings list
+                    flycheck-option-comma-separated-list)
+            "-")
+  :standard-input t
+  :error-parser flycheck-parse-checkstyle
+  :error-filter
+  (lambda (errors)
+    (flycheck-remove-error-file-names
+     "-" (flycheck-dequalify-error-ids errors)))
+  :modes sh-mode
+  :predicate (lambda () (memq sh-shell flycheck-shellcheck-supported-shells))
+  :verify (lambda (_)
+            (let ((supports-shell (memq sh-shell
+                                        flycheck-shellcheck-supported-shells)))
+              (list
+               (flycheck-verification-result-new
+                :label (format "Shell %s supported" sh-shell)
+                :message (if supports-shell "yes" "no")
+                :face (if supports-shell 'success '(bold warning)))))))
+
+
 
 ;;; ********************
 ;;; Exordium overrides
@@ -177,6 +300,15 @@
 ;;
 ;; Quickie convenience functions and their key mappings
 ;;
+
+;;; https://bbgithub.dev.bloomberg.com/bspiers5/emacs-init/blob/master/init.el#L188
+(defadvice kill-line (before kill-line-autoreindent activate)
+  "Kill excess whitespace when joining lines.
+If the next line is joined to the current line, kill the extra indent whitespace in front of the next line."
+  (when (and (eolp) (not (bolp)))
+    (save-excursion
+      (forward-char 1)
+      (just-one-space 1))))
 
 (defun kill-other-buffers ()
   "Kill all other buffers."
@@ -431,7 +563,7 @@
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (graphviz-dot-mode flycheck-bashate emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
+    (bash-completion flycheck-status-emoji flycheck-pos-tip flycheck-color-mode-line graphviz-dot-mode emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
