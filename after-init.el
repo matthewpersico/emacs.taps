@@ -25,7 +25,11 @@
     (setq mop-myHome (concat (getenv "HOMEDRIVE") (getenv "HOMEPATH")))))
  ((string-equal system-type "gnu/linux")
   (progn
-    (setq mop-myHome (getenv "HOME")))))
+    (setq mop-myHome (getenv "HOME"))))
+ ((string-equal system-type "darwin")
+  (progn
+    (setq mop-myHome (getenv "HOME"))))
+ )
 
 ;;; ********************
 ;;; Add the taps directory as part of the load path so that I can use
