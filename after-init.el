@@ -28,7 +28,12 @@
     (setq mop-myHome (getenv "HOME"))))
  ((string-equal system-type "darwin")
   (progn
-    (setq mop-myHome (getenv "HOME"))))
+    (setq mop-myHome (getenv "HOME"))
+    (when (memq window-system '(mac ns x))
+             (exec-path-from-shell-initialize)
+             (exec-path-from-shell-copy-env "HOSTNAME")
+             )
+    ))
  )
 
 ;;; ********************
@@ -55,12 +60,11 @@
 (global-set-key [f8]  'start-kbd-macro)
 (global-set-key [f9]  'end-kbd-macro)
 (global-set-key [f10] 'call-last-kbd-macro)
-(global-set-key [f11] 'bury-buffer) ;; buffer rotation, different from window
-                                    ;; rotation
 (global-set-key (kbd "<f2> n") 'bury-buffer) ;; buffer rotation, different from
-                                             ;; window rotation. Mapped for
-                                             ;; when f11 is gobbled up by the
-                                             ;; browser of a vpn session
+                                             ;; window rotation. Re-mapped from
+                                             ;; f11 because the mac and many VM
+                                             ;; apps gobble f11 for their own
+                                             ;; uses.
 
 ;; `narrow-to-region' ("C-x n n") is disabled; most likely to get invoked with
 ;; those keystrokes when least expected and I never use it.
@@ -556,6 +560,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(exordium-enable-y-or-n t)
  '(exordium-highlight-linum t)
  '(explicit-shell-file-name nil)
+ '(flycheck-keymap-prefix "f")
  '(global-linum-mode t)
  '(global-visual-line-mode nil)
  '(imenu-max-item-length nil)
@@ -567,7 +572,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (bash-completion flycheck-status-emoji flycheck-pos-tip flycheck-color-mode-line graphviz-dot-mode emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
+    (nyan-mode bash-completion flycheck-status-emoji flycheck-pos-tip flycheck-color-mode-line graphviz-dot-mode emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
@@ -588,3 +593,4 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(ediff-even-diff-A ((t (:foreground "#969896" :inverse-video nil))))
  '(ediff-even-diff-B ((t (:foreground "#969896" :inverse-video nil))))
  '(linum-highlight-face ((t (:background "white smoke" :distant-foreground "black")))))
+;;; if we are on a mac, we want to set the default custom face to height 140
