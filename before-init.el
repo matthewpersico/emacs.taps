@@ -16,5 +16,7 @@
     (setq url-proxy-services
           '(("no_proxy" . "^\\(localhost\\|10.*\\)")
             ("http"     . "proxy.bloomberg.com:77")
-            ("https"    . "proxy.bloomberg.com:77")))))
+            ("https"    . "proxy.bloomberg.com:77")))
+    (message "Using darwin configs in before-init.el")
+    ))
  )
