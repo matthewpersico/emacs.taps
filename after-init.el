@@ -586,11 +586,12 @@ If the next line is joined to the current line, kill the extra indent whitespace
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 140 ))))
+ '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 100 ))))
  '(cperl-array-face ((t (:foreground "yellow" :weight bold))))
  '(cperl-hash-face ((t (:foreground "Red" :slant italic :weight bold))))
  '(cursor ((t (:background "spring green"))))
  '(ediff-even-diff-A ((t (:foreground "#969896" :inverse-video nil))))
  '(ediff-even-diff-B ((t (:foreground "#969896" :inverse-video nil))))
  '(linum-highlight-face ((t (:background "white smoke" :distant-foreground "black")))))
-;;; if we are on a mac, we want to set the default custom face to height 140
+;;; If we are running (not just displaying) the emacs process on a mac, we may
+;;; want to set the default custom face to height 140.
