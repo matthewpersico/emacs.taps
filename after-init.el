@@ -586,7 +586,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 100 ))))
+ '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 100))))
  '(cperl-array-face ((t (:foreground "yellow" :weight bold))))
  '(cperl-hash-face ((t (:foreground "Red" :slant italic :weight bold))))
  '(cursor ((t (:background "spring green"))))
