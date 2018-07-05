@@ -570,9 +570,6 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(line-move-visual nil)
  '(nyan-animate-nyancat t)
  '(nyan-mode t)
- '(package-selected-packages
-   (quote
-    (nyan-mode bash-completion flycheck-status-emoji flycheck-pos-tip flycheck-color-mode-line graphviz-dot-mode emojify yasnippet vlf rainbow-delimiters project-explorer powerline paredit page-break-lines ox-gfm org-bullets nlinum modern-cpp-font-lock markdown-mode magit impatient-mode iedit ido-ubiquitous highlight-symbol helm-swoop helm-rtags helm-projectile helm-descbinds helm-ag groovy-mode git-timemachine git-gutter-fringe fill-column-indicator expand-region exec-path-from-shell evil eval-sexp-fu enh-ruby-mode diminish default-text-scale company-rtags cmake-mode cider auto-complete-c-headers all-the-icons ace-window ac-rtags ac-js2)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
