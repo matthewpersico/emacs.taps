@@ -16,6 +16,8 @@
 
 ;;; Code:
 
+(message "Start after-init.el")
+
 ;;; ********************
 ;;; OS Setup
 (defvar mop-myHome)
@@ -592,3 +594,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(linum-highlight-face ((t (:background "white smoke" :distant-foreground "black")))))
 ;;; If we are running (not just displaying) the emacs process on a mac, we may
 ;;; want to set the default custom face to height 140.
+
+(message "End after-init.el")
+(provide `after-init)
+;;; after-init ends here
