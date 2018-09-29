@@ -570,8 +570,12 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(kept-new-versions 6)
  '(kill-whole-line t)
  '(line-move-visual nil)
+ '(markdown-command "markdown_py")
  '(nyan-animate-nyancat t)
  '(nyan-mode t)
+ '(package-selected-packages
+   (quote
+    (groovy-mode all-the-icons evil default-text-scale modern-cpp-font-lock eval-sexp-fu highlight vlf nlinum powerline ox-gfm org-bullets page-break-lines treemacs-projectile goto-chg exec-path-from-shell fill-column-indicator enh-ruby-mode impatient-mode markdown-mode cmake-mode helm-projectile projectile ido-completing-read+ helm-ag helm-swoop helm-flycheck helm-descbinds rainbow-delimiters paredit cider iedit ac-js2 js2-mode yasnippet auto-complete-c-headers helm-rtags flycheck-rtags company-rtags ac-rtags rtags company auto-complete expand-region git-gutter-fringe git-gutter git-timemachine magit highlight-symbol diminish)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
