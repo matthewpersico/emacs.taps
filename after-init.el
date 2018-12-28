@@ -575,7 +575,61 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (groovy-mode all-the-icons evil default-text-scale modern-cpp-font-lock eval-sexp-fu highlight vlf nlinum powerline ox-gfm org-bullets page-break-lines treemacs-projectile goto-chg exec-path-from-shell fill-column-indicator enh-ruby-mode impatient-mode markdown-mode cmake-mode helm-projectile projectile ido-completing-read+ helm-ag helm-swoop helm-flycheck helm-descbinds rainbow-delimiters paredit cider iedit ac-js2 js2-mode yasnippet auto-complete-c-headers helm-rtags flycheck-rtags company-rtags ac-rtags rtags company auto-complete expand-region git-gutter-fringe git-gutter git-timemachine magit highlight-symbol diminish)))
+    (ac-js2
+ac-rtags
+all-the-icons
+ancestors
+auto-complete
+auto-complete-c-headers
+bash-completion
+cider
+cmake-mode
+common
+company
+company-rtags
+default-text-scale
+diminish
+enh-ruby-mode
+eval-sexp-fu
+evil
+exec-path-from-shell
+expand-region
+fill-column-indicator
+flycheck-rtags
+git-gutter
+git-gutter-fringe
+git-timemachine
+goto-chg
+groovy-mode
+helm-ag
+helm-descbinds
+helm-flycheck
+helm-projectile
+helm-rtags
+helm-swoop
+highlight
+highlight-symbol
+ido-completing-read+
+iedit
+impatient-mode
+js2-mode
+magit
+markdown-mode
+merged
+modern-cpp-font-lock
+nlinum
+org-bullets
+ox-gfm
+page-break-lines
+paredit
+powerline
+projectile
+rainbow-delimiters
+rtags
+treemacs-projectile
+vlf
+yasnippet
+)))
  '(protect-buffer-bury-p nil)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
