@@ -574,64 +574,9 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (ac-js2
-ac-rtags
-all-the-icons
-ancestors
-auto-complete
-auto-complete-c-headers
-bash-completion
-cider
-cmake-mode
-common
-company
-company-rtags
-default-text-scale
-diminish
-dpkg-dev-el
-enh-ruby-mode
-eval-sexp-fu
-evil
-exec-path-from-shell
-expand-region
-fill-column-indicator
-flycheck-rtags
-git-gutter
-git-gutter-fringe
-git-timemachine
-goto-chg
-groovy-mode
-helm-ag
-helm-descbinds
-helm-flycheck
-helm-projectile
-helm-rtags
-helm-swoop
-highlight
-highlight-symbol
-ido-completing-read+
-iedit
-impatient-mode
-js2-mode
-lang-refactor-perl
-magit
-markdown-mode
-merged
-modern-cpp-font-lock
-nlinum
-org-bullets
-ox-gfm
-page-break-lines
-paredit
-powerline
-projectile
-rainbow-delimiters
-rtags
-treemacs-projectile
-vlf
-yasnippet
-)))
+    (json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
  '(protect-buffer-bury-p nil)
+ '(python-shell-interpreter "python3.7")
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
  '(tool-bar-mode nil)
