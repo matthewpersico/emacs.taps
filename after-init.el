@@ -329,13 +329,13 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (defun MOP-insert-buffer-name ()
   "MOP - Insert the buffer name into the buffer at the current editing point"
   (interactive "*")
-  (insert-string (buffer-name)))
+  (insert (buffer-name)))
 (global-set-key (kbd "<f12>") 'MOP-insert-buffer-name)
 
 (defun MOP-insert-function-name ()
   "MOP - Insert the function name into the buffer at the current editing point"
   (interactive "*")
-  (insert-string (add-log-current-defun)))
+  (insert (add-log-current-defun)))
 (global-set-key (kbd "S-<f12>") 'MOP-insert-function-name)
 
 (defun MOP-insert-buffer-list ()
@@ -346,7 +346,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (defun MOP-insert-now-time ()
   "MOP - Insert the current time into the buffer at the current editing point"
   (interactive "*")
-  (insert-string (current-time-string)))
+  (insert (current-time-string)))
 
 (defun MOP-strip-end-whitespace ()
   "MOP - All trailing whitespace gets chucked"
@@ -562,7 +562,6 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(exordium-highlight-linum t)
  '(explicit-shell-file-name nil)
  '(flycheck-keymap-prefix "f")
- '(global-linum-mode t)
  '(global-visual-line-mode nil)
  '(imenu-max-item-length nil)
  '(imenu-sort-function (quote imenu--sort-by-name))
