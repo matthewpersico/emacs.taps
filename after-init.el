@@ -212,6 +212,15 @@
   (local-set-key (kbd "C-c C-t") 'perltidy-buffer))
 (add-hook 'cperl-mode-hook 'cperl-mode-hook-for-perltidy)
 
+;;; ********************
+;;; Python
+
+;(use-package elpy
+;  :ensure t
+;  :defer t
+;  :init
+;  (advice-add 'python-mode :before 'elpy-enable))
+
 ;;; **********************************
 ;;; Additional file types for spelling
 (defun turn-on-flyspell () (flyspell-mode 1))
@@ -253,7 +262,7 @@
               (forward-line)
               )
         ;; Insert the disable line
-        (insert (format "# shellcheck disable=%s\n" id))
+        (insert (format "# shellcheck disable=%s #https://github.com/koalaman/shellcheck/wiki/%s\n" id id))
         ;; Indent it
         (indent-for-tab-command))
 
@@ -573,7 +582,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
+    (elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
  '(protect-buffer-bury-p nil)
  '(python-shell-interpreter "python3.7")
  '(show-paren-mode t)
