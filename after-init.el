@@ -51,6 +51,10 @@
 ;; live with that.
 (global-set-key (kbd "S-<delete>") nil)
 
+;; Ctrl PageDown is pressed more by accident than anything
+;; else.
+(global-set-key (kbd "C-<next>") nil)
+
 ;; Turn off Swoop
 (global-set-key (kbd "C-S-s") nil) ;; defaults down to C-s
 
@@ -566,6 +570,8 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(custom-safe-themes
    (quote
     ("6a18a817e5a1d220a8de8af5d6e5f4619fe3df61dd2cbc37b9acd8d77d42e026" "f5519676e9580060b510012ffde3b41dd5392a3debc98a2b02995499a086a7d4" default)))
+ '(ediff-split-window-function (quote split-window-horizontally))
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(exordium-backup-files t)
  '(exordium-enable-y-or-n t)
  '(exordium-highlight-linum t)
