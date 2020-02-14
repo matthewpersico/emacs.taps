@@ -12,7 +12,7 @@
 (defvar bbvpn-is-running "" "Is the Bloomberg network running.")
 (setq bbvpn-is-running
       (substring
-       (shell-command-to-string "winproc-is-running -v  bbvpn.exe")
+       (shell-command-to-string "winproc-is-running -v  bbvpn2.exe")
        0 -1)
       )
 (defvar bb-nodeproxy-is-running "" "Is the Bloomberg proxier running.")
