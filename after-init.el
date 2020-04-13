@@ -228,6 +228,10 @@
 (require 'virtualenvwrapper)
 (venv-initialize-interactive-shells) ;; if you want interactive shell support
 (venv-initialize-eshell) ;; if you want eshell support
+(use-package pyvenv
+  :ensure t
+  :config
+  (pyvenv-mode 1))
 
 ;;; **********************************
 ;;; Additional file types for spelling
@@ -504,6 +508,9 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;; ********************
 ;;; Overrides
 
+;;; Not sure what this is, but here it is anyway, moved from init.el.
+(put 'erase-buffer 'disabled nil)
+
 ;;; imenu does not recognize foo-bar() as a function. We fix that here:
 (require 'sh-script-imode)
 
@@ -592,7 +599,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
+    (realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path (quote ("/opt/bb/bin")))
  '(python-shell-interpreter "python3.8")
