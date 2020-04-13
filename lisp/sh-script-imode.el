@@ -67,8 +67,8 @@
 	("\\$\\({#?\\)?\\([[:alpha:]_][[:alnum:]_]*\\|[-#?@!]\\)" 2
 	  font-lock-variable-name-face)
 	;; Function names.
-	("^\\(\\sw+\\)[ \t]*(" 1 font-lock-function-name-face)
-	("\\<\\(function\\)\\>[ \t]*\\(\\sw+\\)?"
+	("^\\([[:alpha:]_:-][[:alnum:]_:-]*\\)[ \t]*(" 1 font-lock-function-name-face)
+	("\\<\\(function\\)\\>[ \t]*\\([[:alpha:]_:-][[:alnum:]_:-]*\\)?"
 	  (1 font-lock-keyword-face) (2 font-lock-function-name-face nil t))
 	("\\(?:^\\s *\\|[[();&|]\\s *\\|\\(?:\\s +-[ao]\\|if\\|else\\|then\\|while\\|do\\)\\s +\\)\\(!\\)"
 	 1 font-lock-negation-char-face))
