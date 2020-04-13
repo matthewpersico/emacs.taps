@@ -212,6 +212,7 @@
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 (require 'perltidy)
 (defun cperl-mode-hook-for-perltidy ()
+  "Keymaps for perltidy functions."
   (local-set-key (kbd "C-c t") 'perltidy-region)
   (local-set-key (kbd "C-c C-t") 'perltidy-buffer))
 (add-hook 'cperl-mode-hook 'cperl-mode-hook-for-perltidy)
@@ -224,6 +225,13 @@
 ;  :defer t
 ;  :init
 ;  (advice-add 'python-mode :before 'elpy-enable))
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells) ;; if you want interactive shell support
+(venv-initialize-eshell) ;; if you want eshell support
+(use-package pyvenv
+  :ensure t
+  :config
+  (pyvenv-mode 1))
 
 ;;; **********************************
 ;;; Additional file types for spelling
@@ -340,13 +348,13 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key (kbd "C-x K") 'kill-other-buffers)
 
 (defun MOP-insert-buffer-name ()
-  "MOP - Insert the buffer name into the buffer at the current editing point"
+  "MOP - Insert the buffer name into the buffer at the current editing point."
   (interactive "*")
   (insert (buffer-name)))
 (global-set-key (kbd "<f12>") 'MOP-insert-buffer-name)
 
 (defun MOP-insert-function-name ()
-  "MOP - Insert the function name into the buffer at the current editing point"
+  "MOP - Insert the function name into the buffer at the current editing point."
   (interactive "*")
   (insert (add-log-current-defun)))
 (global-set-key (kbd "S-<f12>") 'MOP-insert-function-name)
@@ -357,12 +365,12 @@ If the next line is joined to the current line, kill the extra indent whitespace
   (buffer-list t))
 
 (defun MOP-insert-now-time ()
-  "MOP - Insert the current time into the buffer at the current editing point"
+  "MOP - Insert the current time into the buffer at the current editing point."
   (interactive "*")
   (insert (current-time-string)))
 
 (defun MOP-strip-end-whitespace ()
-  "MOP - All trailing whitespace gets chucked"
+  "MOP - All trailing whitespace gets chucked."
   (interactive "*")
   (save-excursion
     (goto-char(point-min)) ;; Faster than beginning-of-buffer
@@ -372,7 +380,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key "\C-x\C-z" 'delete-trailing-whitespace) ;MOP-strip-end-whitespace)
 
 (defun MOP-strip-start-whitespace ()
-  "MOP - All leading whitespace gets chucked"
+  "MOP - All leading whitespace gets chucked,"
   (interactive "*")
   (save-excursion
     (goto-char(point-min)) ;; Faster than beginning-of-buffer
@@ -500,6 +508,9 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;; ********************
 ;;; Overrides
 
+;;; Not sure what this is, but here it is anyway, moved from init.el.
+(put 'erase-buffer 'disabled nil)
+
 ;;; imenu does not recognize foo-bar() as a function. We fix that here:
 (require 'sh-script-imode)
 
@@ -588,13 +599,15 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(package-selected-packages
    (quote
-    (fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
+    (realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
  '(protect-buffer-bury-p nil)
- '(python-shell-interpreter "python3.7")
+ '(python-shell-exec-path (quote ("/opt/bb/bin")))
+ '(python-shell-interpreter "python3.8")
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
  '(tool-bar-mode nil)
  '(track-eol t)
+ '(treemacs-git-mode nil)
  '(truncate-lines t)
  '(version-control t)
  '(word-wrap nil))
