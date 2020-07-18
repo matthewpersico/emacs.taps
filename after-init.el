@@ -369,15 +369,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
   (interactive "*")
   (insert (current-time-string)))
 
-(defun MOP-strip-end-whitespace ()
-  "MOP - All trailing whitespace gets chucked."
-  (interactive "*")
-  (save-excursion
-    (goto-char(point-min)) ;; Faster than beginning-of-buffer
-    (while (re-search-forward "[ \t]+$" nil t)
-      (replace-match "" nil nil)))
-  (message "MOP-strip-end-whitespace complete."))
-(global-set-key "\C-x\C-z" 'delete-trailing-whitespace) ;MOP-strip-end-whitespace)
+(global-set-key "\C-x\C-z" 'delete-trailing-whitespace)
 
 (defun MOP-strip-start-whitespace ()
   "MOP - All leading whitespace gets chucked,"
