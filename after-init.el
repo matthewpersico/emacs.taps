@@ -62,7 +62,7 @@
 (global-set-key (kbd "C-S-a") nil)
 
 ;; Function keys
-(global-set-key [f1]  'shell)
+(global-set-key [f1]  'vterm)
 (global-set-key [f8]  'start-kbd-macro)
 (global-set-key [f9]  'end-kbd-macro)
 (global-set-key [f10] 'call-last-kbd-macro)
@@ -119,9 +119,6 @@
 ;; Word completions
 (ac-set-trigger-key "TAB")
 
-;; ediff
-(setq ediff-split-window-function 'split-window-horizontally)
-
 ;; VC and diff
 (define-key vc-menu-map [vc-ediff]
   '(menu-item "Ediff with Base Version" vc-ediff
@@ -154,6 +151,7 @@
 (add-hook 'cperl-mode-hook 'imenu-add-menubar-index)
 (add-hook 'perl-mode-hook 'imenu-add-menubar-index)
 (add-hook 'sh-mode-hook 'imenu-add-menubar-index)
+(which-function-mode 1)
 
 ;;; ********************
 ;;; Shell
@@ -210,6 +208,7 @@
 (add-to-list 'auto-mode-alist '("\\.ptkdb\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
+(add-to-list 'interpreter-mode-alist '("perl5.32" . cperl-mode))
 (require 'perltidy)
 (defun cperl-mode-hook-for-perltidy ()
   "Keymaps for perltidy functions."
@@ -235,7 +234,7 @@
 
 ;;; **********************************
 ;;; Additional file types for spelling
-(defun turn-on-flyspell () (flyspell-mode 1))
+(defun turn-on-flyspell () "Turn on flyspell." (flyspell-mode 1))
 (add-hook 'markdown-mode-hook 'turn-on-flyspell)
 (add-hook 'change-log-mode-hook 'turn-on-flyspell)
 
@@ -245,7 +244,7 @@
 
 ;; The following is thanks to https://github.com/flycheck/flycheck/issues/1436
 (defun shellcheck-disable-error-at-point (&optional pos)
-  "Insert a shellcheck disable directive at the current error in the code."
+  "Insert a shellcheck disable directive at the current error (POS) in the code."
   (interactive)
   (-when-let* ((error (tabulated-list-get-id pos))
                (buffer (flycheck-error-buffer error))
@@ -318,12 +317,22 @@ See URL `https://github.com/koalaman/shellcheck/'."
                 :message (if supports-shell "yes" "no")
                 :face (if supports-shell 'success '(bold warning)))))))
 
-
+;;; ********************
+;;; Whitespace - Turn off delete trail on save so that PRs and quilts don't get
+;;; extraneous changes. ws-butler will remove trailing whitespace as you go,
+;;; only on lines you edit.
+(require 'ws-butler)
+(ws-butler-global-mode)
+(global-delete-trailing-whitespace-mode -1)
 
 ;;; ********************
 ;;; Exordium overrides
 
 ;;; None
+
+;;; ********************
+;;; Popper
+;;; https://www.youtube.com/watch?v=E-xUNlZi3rI
 
 ;;; ********************
 ;;; Locally created functions
@@ -372,7 +381,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key "\C-x\C-z" 'delete-trailing-whitespace)
 
 (defun MOP-strip-start-whitespace ()
-  "MOP - All leading whitespace gets chucked,"
+  "MOP - All leading whitespace gets chucked."
   (interactive "*")
   (save-excursion
     (goto-char(point-min)) ;; Faster than beginning-of-buffer
@@ -382,23 +391,31 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key "\C-xZ" 'MOP-strip-start-whitespace)
 
 (defun MOP-upcase-region-or-char (arg)
-  "LOCAL: Uppercase the region, else uppercase the char under the cursor."
+  "If a region is selected, uppercase it.  Else, if cursor is on a -, replace it with _.  Else uppercase the current char (ARG)."
   (interactive "p")
-  (if (region-active-p)
-      (upcase-region (region-beginning) (region-end))
-    ( progn (let ((beg (point))) (forward-char arg) (upcase-region beg (point))))
-   )
-  )
+  (cond ((region-active-p)
+         (upcase-region (region-beginning) (region-end)))
+        ((looking-at "-")
+         (delete-char 1 nil)
+         (insert "_"))
+        (t
+         (let ((beg (point)))
+           (forward-char arg)
+           (upcase-region beg (point))))))
 (global-set-key "\C-x\C-u" 'MOP-upcase-region-or-char)
 
 (defun MOP-downcase-region-or-char (arg)
-  "LOCAL: Lowercase the region, else lowercase the char under the cursor."
+  "If a region is selected, lowercase it.  Else, if cursor is on a -, replace it with _.  Else lowercase the current char (ARG)."
   (interactive "p")
-  (if (region-active-p)
-      (downcase-region (region-beginning) (region-end))
-    ( progn (let ((beg (point))) (forward-char arg) (downcase-region beg (point))))
-   )
-  )
+  (cond ((region-active-p)
+         (downcase-region (region-beginning) (region-end)))
+        ((looking-at "_")
+         (delete-char 1 nil)
+         (insert "-"))
+        (t
+         (let ((beg (point)))
+           (forward-char arg)
+           (downcase-region beg (point))))))
 (global-set-key "\C-x\C-l" 'MOP-downcase-region-or-char)
 
 ;; Popup buffer list on shift button 3. - FAQ
@@ -410,7 +427,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (define-key global-map [(shift button3)] 'MOP-popup-buffer-list)
 
 (defun MOP-standard-make ()
-  "MOP - set the normal compile command and kick it off"
+  "MOP - set the normal compile command and kick it off."
   (interactive "i")
   (setq compile-command "make ")
   (call-interactively 'compile))
@@ -420,6 +437,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;; query-replaces, because most of these things benefit from the
 ;; attention of a human eyeball --- the regexps aren't perfect
 (defun MOP-fix-C-formatting ()
+  "MOP - Whipping an alien C-source file into shape."
   (interactive)
 
   ; Convert all tab characters into appropriate sequences of space
@@ -481,7 +499,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
   )
 
 (defun MOP-regexp-replace-across-buffers ()
-  "MOP - M-x ibuffer RET t Q"
+  "MOP - Meta-x ibuffer RET t Q."
   (interactive "*")
   (message "Use the command sequence M-x ibuffer RET t Q"))
 
@@ -512,25 +530,25 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (defadvice
     isearch-forward
     (after isearch-forward-recenter activate)
-    (recenter))
+  "String to shut up flycheck." (recenter))
 (ad-activate 'isearch-forward)
 
 (defadvice
     isearch-backward
     (after isearch-backward-recenter activate)
-    (recenter))
+  "String to shut up flycheck." (recenter))
 (ad-activate 'isearch-backward)
 
 (defadvice
     isearch-repeat-forward
     (after isearch-repeat-forward-recenter activate)
-    (recenter))
+  "String to shut up flycheck." (recenter))
 (ad-activate 'isearch-repeat-forward)
 
 (defadvice
     isearch-repeat-backward
     (after isearch-repeat-backward-recenter activate)
-    (recenter))
+  "String to shut up flycheck." (recenter))
 (ad-activate 'isearch-repeat-backward)
 
 ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html#Interlocking
@@ -543,6 +561,8 @@ If the next line is joined to the current line, kill the extra indent whitespace
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ac-auto-start 2 nil nil "Customized with use-package auto-complete")
+ '(ac-ignore-case nil nil nil "Customized with use-package auto-complete")
  '(ac-trigger-key "TAB")
  '(add-log-always-start-new-record t)
  '(ansi-color-faces-vector
@@ -576,11 +596,17 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(ediff-split-window-function (quote split-window-horizontally) t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(exordium-backup-files t)
+ '(exordium-delete-trailing-whitespace nil)
  '(exordium-enable-y-or-n t)
  '(exordium-highlight-linum t)
  '(explicit-shell-file-name nil)
  '(flycheck-keymap-prefix "f")
  '(global-visual-line-mode nil)
+ '(helm-ag-insert-at-point (quote symbol) nil nil "Customized with use-package helm-ag")
+ '(helm-buffer-details-flag nil nil nil "Customized with use-package helm")
+ '(helm-describe-function-function (function helpful-function) nil nil "Customized with use-package helm")
+ '(helm-describe-variable-function (function helpful-variable) nil nil "Customized with use-package helm")
+ '(helm-split-window-default-side (quote other) nil nil "Customized with use-package helm")
  '(imenu-max-item-length nil)
  '(imenu-sort-function (quote imenu--sort-by-name))
  '(kept-new-versions 6)
@@ -589,9 +615,10 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(markdown-command "markdown_py")
  '(nyan-animate-nyancat t)
  '(nyan-mode t)
+ '(org-support-shift-select t)
  '(package-selected-packages
    (quote
-    (realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
+    (popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path (quote ("/opt/bb/bin")))
  '(python-shell-interpreter "python3.8")
