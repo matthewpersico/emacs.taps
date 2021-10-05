@@ -215,6 +215,7 @@
   (local-set-key (kbd "C-c t") 'perltidy-region)
   (local-set-key (kbd "C-c C-t") 'perltidy-buffer))
 (add-hook 'cperl-mode-hook 'cperl-mode-hook-for-perltidy)
+(require 'perl-find-library)
 
 ;;; ********************
 ;;; Python
