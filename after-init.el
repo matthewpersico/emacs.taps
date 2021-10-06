@@ -163,12 +163,8 @@
 
 ;; Window and iconified title
 (setq frame-title-format (list "emacs@"
-                               (substring (getenv "HOSTNAME")
-                                          0
-                                          (string-match-p (regexp-quote "\.") (getenv "HOSTNAME"))
-                                          )
                                " - (%f)")
-      )
+          )
 
 ;;; https://bbgithub.dev.bloomberg.com/bspiers5/emacs-init/blob/master/init.el#L124
 
