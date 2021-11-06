@@ -78,15 +78,17 @@
 ;;(global-set-key "\C-XN" 'narrow-to-region) ;rebind to cap
 ;;(global-set-key "\C-xW" 'widen)         ;rebind to cap
 
-;; next/previous window
+;; next/previous window.
 (global-set-key "\C-Xn" 'other-window)
 (global-set-key "\C-Xp"
                 '(lambda (arg)
                    "Select the ARG'th previous different window"
                    (interactive "p")
                    (other-window (- arg))))
+
 ;; Default function for these is unwanted and keeps asking if I want to enable
-;; it.
+;; it. Also useful in markdown files where \C-xn/p are assigned to markdown
+;; functions.
 (global-set-key "\C-X\C-n" 'other-window)
 (global-set-key "\C-X\C-p"
                 '(lambda (arg)
@@ -553,6 +555,10 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;  checks them. So we put them back and we fix the rsync.
 ;; '(create-lockfiles nil)
 
+;; This was removed from custom-set-variables because it does not seem to play
+;; with Perl 5.16:
+;; '(flycheck-perl-include-path (quote ("lib/perl" "../lib/perl" "")))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -615,7 +621,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(org-support-shift-select t)
  '(package-selected-packages
    (quote
-    (popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
+    (2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet)))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path (quote ("/opt/bb/bin")))
  '(python-shell-interpreter "python3.8")
