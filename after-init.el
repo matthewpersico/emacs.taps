@@ -129,17 +129,43 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
+(fringe-helper-define 'git-gutter-fr:added nil
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "XXXXXXXX"
+  "XXXXXXXX"
+  "...XX..."
+  "...XX..."
+  "...XX...")
+(set-face-foreground 'git-gutter-fr:added    "green")
+
+(fringe-helper-define 'git-gutter-fr:modified nil
+  "........"
+  "........"
+  "..XX...."
+  ".XXXX..X"
+  "X..XXXX."
+  "....XX.."
+  "........"
+  "........")
+(set-face-foreground 'git-gutter-fr:modified   "yellow")
+
+(fringe-helper-define 'git-gutter-fr:deleted nil
+  "........"
+  "........"
+  "........"
+  "XXXXXXXX"
+  "XXXXXXXX"
+  "........"
+  "........"
+  "........")
+(set-face-foreground 'git-gutter-fr:deleted    "red")
+;;; this line added
 ;;; ********************
 ;;; aliases
 (defalias 'yes-or-no-p 'y-or-n-p) ; y or n is enough
 (defalias 'perl-mode 'cperl-mode) ; always use cperl-mode
-
-;;; ********************
-;;; recent files
-;; EXORDIUM NOT NEEDED: (require 'recentf)
-(setq recentf-max-saved-items 200
-      recentf-max-menu-items 15)
-;; EXORDIUM NOT NEEDED: (recentf-mode 1)
 
 ;;; ********************
 ;;; server start
@@ -149,7 +175,7 @@
 ;;; imenu
 (if (featurep 'xemacs)
      (global-set-key [(button3)] 'imenu) ; XEmacs
-   (global-set-key [mouse-3] 'imenu)) ; GNU Emacs
+   (global-set-key [mouse-3] 'imenu)) ; else GNU Emacs
 (add-hook 'cperl-mode-hook 'imenu-add-menubar-index)
 (add-hook 'perl-mode-hook 'imenu-add-menubar-index)
 (add-hook 'sh-mode-hook 'imenu-add-menubar-index)
@@ -607,6 +633,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(exordium-highlight-linum t)
  '(explicit-shell-file-name nil)
  '(flycheck-keymap-prefix "f")
+ '(fringe-mode 16 nil (fringe))
  '(global-visual-line-mode nil)
  '(helm-ag-insert-at-point 'symbol nil nil "Customized with use-package helm-ag")
  '(helm-buffer-details-flag nil nil nil "Customized with use-package helm")
@@ -623,7 +650,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-gutter-fringe git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet))
+   '(2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
