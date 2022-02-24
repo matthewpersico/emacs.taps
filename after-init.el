@@ -654,6 +654,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
+ '(save-place-mode t)
  '(show-paren-mode t)
  '(show-trailing-whitespace t)
  '(tool-bar-mode nil)
