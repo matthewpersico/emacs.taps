@@ -183,7 +183,7 @@
 
 ;;; ********************
 ;;; Shell
-(require 'bash-completion)
+(use-package bash-completion)
 (bash-completion-setup)
 
 ;;; ********************
@@ -236,13 +236,13 @@
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.32" . cperl-mode))
-(require 'perltidy)
+(use-package perltidy)
 (defun cperl-mode-hook-for-perltidy ()
   "Keymaps for perltidy functions."
   (local-set-key (kbd "C-c t") 'perltidy-region)
   (local-set-key (kbd "C-c C-t") 'perltidy-buffer))
 (add-hook 'cperl-mode-hook 'cperl-mode-hook-for-perltidy)
-(require 'perl-find-library)
+(use-package perl-find-library)
 
 ;;; ********************
 ;;; Python
@@ -252,7 +252,7 @@
 ;  :defer t
 ;  :init
 ;  (advice-add 'python-mode :before 'elpy-enable))
-(require 'virtualenvwrapper)
+(use-package virtualenvwrapper)
 (venv-initialize-interactive-shells) ;; if you want interactive shell support
 (venv-initialize-eshell) ;; if you want eshell support
 (use-package pyvenv
@@ -349,7 +349,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;;; Whitespace - Turn off delete trail on save so that PRs and quilts don't get
 ;;; extraneous changes. ws-butler will remove trailing whitespace as you go,
 ;;; only on lines you edit.
-(require 'ws-butler)
+(use-package ws-butler)
 (ws-butler-global-mode)
 (global-delete-trailing-whitespace-mode -1)
 
@@ -357,6 +357,10 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;;; Exordium overrides
 
 ;;; None
+
+;;; ********************
+;;; File sets
+(filesets-init)
 
 ;;; ********************
 ;;; Popper
@@ -541,7 +545,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;; 5) Save.
 ;;; 6) In order to run the macro, invoke like any other function
 ;;;    (M-x name)
-(require 'kbmacros)
+(use-package kbmacros)
 
 ;;; ********************
 ;;; Overrides
@@ -550,7 +554,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (put 'erase-buffer 'disabled nil)
 
 ;;; imenu does not recognize foo-bar() as a function. We fix that here:
-(require 'sh-script-imode)
+(use-package sh-script-imode)
 
 ;;; Make found search locations vertically center
 ;(add-hook 'isearch-mode-end-hook 'recenter-top-bottom)
@@ -632,6 +636,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(exordium-global-git-gutter-mode t)
  '(exordium-highlight-linum t)
  '(explicit-shell-file-name nil)
+ '(filesets-data nil)
  '(flycheck-keymap-prefix "f")
  '(fringe-mode 16 nil (fringe))
  '(global-visual-line-mode nil)
@@ -650,7 +655,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet))
+   '(lsp-ui lsp-mode 2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
