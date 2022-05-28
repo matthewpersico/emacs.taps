@@ -236,13 +236,13 @@
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.32" . cperl-mode))
-(use-package perltidy)
+(require 'perltidy)
 (defun cperl-mode-hook-for-perltidy ()
   "Keymaps for perltidy functions."
   (local-set-key (kbd "C-c t") 'perltidy-region)
   (local-set-key (kbd "C-c C-t") 'perltidy-buffer))
 (add-hook 'cperl-mode-hook 'cperl-mode-hook-for-perltidy)
-(use-package perl-find-library)
+(require 'perl-find-library)
 
 ;;; ********************
 ;;; Python
@@ -545,7 +545,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;; 5) Save.
 ;;; 6) In order to run the macro, invoke like any other function
 ;;;    (M-x name)
-(use-package kbmacros)
+(require 'kbmacros)
 
 ;;; ********************
 ;;; Overrides
@@ -553,8 +553,8 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;; Not sure what this is, but here it is anyway, moved from init.el.
 (put 'erase-buffer 'disabled nil)
 
-;;; imenu does not recognize foo-bar() as a function. We fix that here:
-(use-package sh-script-imode)
+;;; imenu does not recognize foo-bar() as a function. We fix that here.
+(require 'sh-script-imode)
 
 ;;; Make found search locations vertically center
 ;(add-hook 'isearch-mode-end-hook 'recenter-top-bottom)
