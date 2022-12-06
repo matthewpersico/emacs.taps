@@ -269,6 +269,7 @@
 ;;; ********************
 ;;; Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(global-set-key [f7] 'list-flycheck-errors)
 
 ;; The following is thanks to https://github.com/flycheck/flycheck/issues/1436
 (defun shellcheck-disable-error-at-point (&optional pos)
@@ -628,7 +629,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(custom-enabled-themes '(tomorrow-night-bright))
  '(custom-safe-themes
    '("6a18a817e5a1d220a8de8af5d6e5f4619fe3df61dd2cbc37b9acd8d77d42e026" "f5519676e9580060b510012ffde3b41dd5392a3debc98a2b02995499a086a7d4" default))
- '(ediff-split-window-function 'split-window-horizontally t)
+ '(ediff-split-window-function 'split-window-horizontally)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(exordium-backup-files t)
  '(exordium-delete-trailing-whitespace nil)
@@ -639,6 +640,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(filesets-data nil)
  '(flycheck-keymap-prefix "f")
  '(fringe-mode 16 nil (fringe))
+ '(global-auto-revert-mode t)
  '(global-visual-line-mode nil)
  '(helm-ag-insert-at-point 'symbol nil nil "Customized with use-package helm-ag")
  '(helm-buffer-details-flag nil nil nil "Customized with use-package helm")
@@ -655,7 +657,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
  '(nyan-mode t)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(lsp-ui lsp-mode 2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet))
+   '(dap-mode lsp-treemacs helm-lsp helm-xref flycheck-pos-tip docker-tramp dockerfile-mode docker prettier lsp-ui lsp-mode 2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
