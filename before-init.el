@@ -8,7 +8,7 @@
 
 (message "Start before-init.el")
 (setq garbage-collection-messages 't )
-(setq custom-file (concat "~/.emacs.d/taps/" (getenv "USER") "/after-init.el"))
+;;;;(setq custom-file (concat "~/.emacs.d/taps/" (getenv "USER") "/emacs-custom.el"))
 (cond
  ( (string-equal (getenv "BLOOMBERG") "true")
    (progn
