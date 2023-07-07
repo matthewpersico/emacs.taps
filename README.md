@@ -15,6 +15,8 @@ cd ~/.emacs.d
 mkdir -p taps/$USER
 cd taps/$USER
 git clone <protocol>:<ORG>/emacs.taps .
+cd ~/.emacs.d
+ln -s taps/$USER/emacs-custom.el .
 ```
 
 * If you are using this code in multiple file systems, you should probably
