@@ -4,6 +4,7 @@
 ;;; Other overrides and preferences go in before-init.el or after-init.el
 
 (setq exordium-preferred-fonts '(
+                                 ("Source Code Pro" . 100)
                                  ("Inconsolata" . 120)
                                  ("Consolas"    . 120)
                                  ("Monospace"   . 120)

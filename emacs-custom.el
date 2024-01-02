@@ -43,7 +43,7 @@
  '(exordium-highlight-linum t)
  '(explicit-shell-file-name nil)
  '(filesets-data nil)
- '(flycheck-keymap-prefix "f")
+ '(flycheck-keymap-prefix "\3f")
  '(fringe-mode 16 nil (fringe))
  '(global-auto-revert-mode t)
  '(global-visual-line-mode nil)
@@ -62,7 +62,7 @@
  '(nyan-mode t)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(dap-mode lsp-treemacs helm-lsp helm-xref flycheck-pos-tip docker-tramp dockerfile-mode docker prettier lsp-ui lsp-mode 2048-game popper emojify vterm ws-butler realgud virtualenvwrapper virtualenv pytest python-pytest fireplace elpy json-mode json-navigator json-reformat ac-js2 ac-rtags all-the-icons ancestors auto-complete auto-complete-c-headers bash-completion cider cmake-mode common company company-rtags default-text-scale diminish dpkg-dev-el enh-ruby-mode eval-sexp-fu evil exec-path-from-shell expand-region fill-column-indicator flycheck-rtags git-gutter git-timemachine goto-chg groovy-mode helm-ag helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop highlight highlight-symbol ido-completing-read+ iedit impatient-mode js2-mode lang-refactor-perl magit markdown-mode merged modern-cpp-font-lock nlinum org-bullets ox-gfm page-break-lines paredit powerline projectile rainbow-delimiters rtags treemacs-projectile vlf yasnippet))
+   '(ws-butler pyvenv virtualenvwrapper groovy-mode all-the-icons evil default-text-scale modern-cpp-font-lock eval-sexp-fu highlight vlf nlinum powerline ox-gfm org-bullets page-break-lines treemacs-projectile goto-chg exec-path-from-shell fill-column-indicator enh-ruby-mode impatient-mode markdown-mode cmake-mode helm-projectile projectile ido-completing-read+ helm-ag helm-swoop helm-flycheck helm-descbinds rainbow-delimiters paredit cider iedit ac-js2 js2-mode yasnippet auto-complete-c-headers helm-rtags flycheck-rtags company-rtags ac-rtags rtags company auto-complete expand-region git-gutter-fringe git-gutter git-timemachine magit highlight-symbol diminish))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
@@ -81,7 +81,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "adobe" :slant normal :weight normal :height 100))))
  '(cperl-array-face ((t (:foreground "yellow" :weight bold))))
  '(cperl-hash-face ((t (:foreground "Red" :slant italic :weight bold))))
  '(cursor ((t (:background "spring green"))))

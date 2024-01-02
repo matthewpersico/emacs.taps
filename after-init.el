@@ -41,7 +41,11 @@
 ;;; ********************
 ;;; Add the taps directory as part of the load path so that I can use
 ;;; extensions I like without interfering with Exordium
-(add-to-list 'load-path (concat "~/.emacs.d/taps/" (getenv "USER") "/lisp"))
+(add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/taps/" (getenv "USER") "/lisp"))
+
+;;; And since this should be the last load-path, I can set this now, since
+;;; flycheck does not use load-path directly.  From https://stackoverflow.com/questions/20498554/how-do-i-make-flycheck-find-required-file-in-emacs-lisp
+(setq-default flycheck-emacs-lisp-load-path 'inherit)
 
 ;;; ********************
 ;;; Key defs
@@ -81,7 +85,7 @@
 ;; next/previous window.
 (global-set-key "\C-Xn" 'other-window)
 (global-set-key "\C-Xp"
-                '(lambda (arg)
+                #'(lambda (arg)
                    "Select the ARG'th previous different window"
                    (interactive "p")
                    (other-window (- arg))))
@@ -91,7 +95,7 @@
 ;; functions.
 (global-set-key "\C-X\C-n" 'other-window)
 (global-set-key "\C-X\C-p"
-                '(lambda (arg)
+                #'(lambda (arg)
                    "Select the ARG'th previous different window"
                    (interactive "p")
                    (other-window (- arg))))
@@ -180,11 +184,6 @@
 (add-hook 'perl-mode-hook 'imenu-add-menubar-index)
 (add-hook 'sh-mode-hook 'imenu-add-menubar-index)
 (which-function-mode 1)
-
-;;; ********************
-;;; Shell
-(use-package bash-completion)
-(bash-completion-setup)
 
 ;;; ********************
 ;;; Display
