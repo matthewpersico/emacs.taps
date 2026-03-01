@@ -3,19 +3,24 @@ Git-able customizations for the Exordium emacs system.
 
 When setting up on a new machine
 
-* Clone Exordium from https://github.com/philippe-grenet/exordium.git to ~/.emacs.d
+* Clone Exordium
+
+```bash
+git clone https://github.com/philippe-grenet/exordium.git ~/.emacs.d
+```
 
 * Start emacs, let it initialize the packages in Exordium, then exit.
 
-* Clone this repo to establish your customizations; **WARNING:** Do not execute
+* Clone *this* repo to establish your customizations; **WARNING:** Do not execute
 this step before starting emacs once.
 
 ```bash
 cd ~/.emacs.d
 mkdir -p taps/$USER
 cd taps/$USER
-git clone <protocol>:<ORG>/emacs.taps .
+git clone git@github.com:matthewpersico/emacs.taps .
 cd ~/.emacs.d
+rm -f taps/$USER/emacs-custom.el
 ln -s taps/$USER/emacs-custom.el .
 ```
 
