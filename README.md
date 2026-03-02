@@ -21,7 +21,7 @@ mkdir -p taps/$USER
 cd taps/$USER
 git clone git@github.com:matthewpersico/emacs.taps .
 cd ~/.emacs.d
-rm -f taps/$USER/emacs-custom.el
+rm -f emacs-custom.el
 ln -s taps/$USER/emacs-custom.el .
 ```
 
