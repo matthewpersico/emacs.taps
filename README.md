@@ -3,13 +3,14 @@ Git-able customizations for the Exordium emacs system.
 
 When setting up on a new machine
 
-* Clone Exordium
+* Clone Exordium.
 
 ```bash
 git clone https://github.com/philippe-grenet/exordium.git ~/.emacs.d
 ```
 
-* Start emacs, let it initialize the packages in Exordium, then exit.
+* Start emacs.
+Let it initialize the packages in Exordium, and do all the asyc native compilation stuff. Bring up the `*Async-native-compile-log*` buffer and wait until it is done scrolling by. Then exit emacs and continue.
 
 * Clone *this* repo to establish your customizations; **WARNING:** Do not execute
 this step before starting emacs once.
