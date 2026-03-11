@@ -43,6 +43,7 @@
 ;;; extensions I like without interfering with Exordium
 (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/taps/" (getenv "USER") "/lisp"))
 
+(require 'flycheck)
 ;;; And since this should be the last load-path, I can set this now, since
 ;;; flycheck does not use load-path directly.  From https://stackoverflow.com/questions/20498554/how-do-i-make-flycheck-find-required-file-in-emacs-lisp
 (setq-default flycheck-emacs-lisp-load-path 'inherit)
@@ -123,6 +124,8 @@
 (global-set-key "\C-x\C-k\r" 'ido-kill-buffer)
 
 ;; Word completions
+(require 'auto-complete-config)
+(ac-config-default)
 (ac-set-trigger-key "TAB")
 
 ;; VC and diff
@@ -133,6 +136,8 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
+(require 'fringe)
+(require 'fringe-helper)
 (fringe-helper-define 'git-gutter-fr:added nil
   "...XX..."
   "...XX..."
@@ -165,7 +170,12 @@
   "........"
   "........")
 (set-face-foreground 'git-gutter-fr:deleted    "red")
-;;; this line added
+
+;;; ********************
+;;; Misc
+(global-set-key (kbd "M-Q") 'unfill-paragraph)
+
+:::
 ;;; ********************
 ;;; aliases
 (defalias 'yes-or-no-p 'y-or-n-p) ; y or n is enough
@@ -374,7 +384,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;;
 
 ;;; https://bbgithub.dev.bloomberg.com/bspiers5/emacs-init/blob/master/init.el#L188
-(defadvice kill-line (before kill-line-autoreindent activate)
+(define-advice kill-line (before kill-line-autoreindent activate)
   "Kill excess whitespace when joining lines.
 If the next line is joined to the current line, kill the extra indent whitespace in front of the next line."
   (when (and (eolp) (not (bolp)))
@@ -559,25 +569,25 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;; Make found search locations vertically center
 ;(add-hook 'isearch-mode-end-hook 'recenter-top-bottom)
 
-(defadvice
+(define-advice
     isearch-forward
     (after isearch-forward-recenter activate)
   "String to shut up flycheck." (recenter))
 (ad-activate 'isearch-forward)
 
-(defadvice
+(define-advice
     isearch-backward
     (after isearch-backward-recenter activate)
   "String to shut up flycheck." (recenter))
 (ad-activate 'isearch-backward)
 
-(defadvice
+(define-advice
     isearch-repeat-forward
     (after isearch-repeat-forward-recenter activate)
   "String to shut up flycheck." (recenter))
 (ad-activate 'isearch-repeat-forward)
 
-(defadvice
+(define-advice
     isearch-repeat-backward
     (after isearch-repeat-backward-recenter activate)
   "String to shut up flycheck." (recenter))
@@ -594,4 +604,4 @@ If the next line is joined to the current line, kill the extra indent whitespace
 
 (message "End after-init.el")
 (provide `after-init)
-;;; after-init ends here
+;;; after-init.el ends here
