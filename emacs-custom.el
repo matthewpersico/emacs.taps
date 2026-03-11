@@ -33,7 +33,9 @@
  '(cperl-tab-always-indent t)
  '(custom-enabled-themes '(tomorrow-night-bright))
  '(custom-safe-themes
-   '("6a18a817e5a1d220a8de8af5d6e5f4619fe3df61dd2cbc37b9acd8d77d42e026" "f5519676e9580060b510012ffde3b41dd5392a3debc98a2b02995499a086a7d4" default))
+   '("7e50b79d0ba825c619797088f80920282f882a9701f675f58d62cd6f108815ef"
+     "6a18a817e5a1d220a8de8af5d6e5f4619fe3df61dd2cbc37b9acd8d77d42e026"
+     "f5519676e9580060b510012ffde3b41dd5392a3debc98a2b02995499a086a7d4" default))
  '(ediff-split-window-function 'split-window-horizontally)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(exordium-backup-files t)
@@ -62,7 +64,25 @@
  '(nyan-mode t)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(ws-butler pyvenv virtualenvwrapper groovy-mode all-the-icons evil default-text-scale modern-cpp-font-lock eval-sexp-fu highlight vlf nlinum powerline ox-gfm org-bullets page-break-lines treemacs-projectile goto-chg exec-path-from-shell fill-column-indicator enh-ruby-mode impatient-mode markdown-mode cmake-mode helm-projectile projectile ido-completing-read+ helm-ag helm-swoop helm-flycheck helm-descbinds rainbow-delimiters paredit cider iedit ac-js2 js2-mode yasnippet auto-complete-c-headers helm-rtags flycheck-rtags company-rtags ac-rtags rtags company auto-complete expand-region git-gutter-fringe git-gutter git-timemachine magit highlight-symbol diminish))
+   '(ac-js2 ac-rtags all-the-icons all-the-icons-nerd-fonts apache-mode
+            auto-complete auto-complete-c-headers bazel bison-mode
+            bpftrace-mode caml cider clojure-mode cmake-mode company
+            company-rtags dart-mode dash debian-el default-text-scale diminish
+            dockerfile-mode dpkg-dev-el elm-mode enh-ruby-mode epl eval-sexp-fu
+            evil exec-path-from-shell expand-region f fill-column-indicator
+            flycheck-rtags fountain-mode git-gutter git-gutter-fringe git-modes
+            git-timemachine gitlab-ci-mode gnuplot go-mode goto-chg
+            graphviz-dot-mode groovy-mode haskell-mode helm-ag helm-descbinds
+            helm-flycheck helm-projectile helm-rtags helm-swoop highlight
+            highlight-symbol ido-completing-read+ iedit imenu-list
+            impatient-mode inform-mode jinja2-mode js2-mode kivy-mode
+            kotlin-mode lua-mode magit markdown-mode matlab-mode meson-mode
+            modern-cpp-font-lock nginx-mode nlinum olivetti org-bullets ox-gfm
+            page-break-lines paredit php-mode pip-requirements pkg-info po-mode
+            powerline projectile protobuf-mode puppet-mode pyvenv qml-mode
+            racket-mode rainbow-delimiters rtags rust-mode s scala-mode systemd
+            treemacs-projectile unfill vala-mode virtualenvwrapper vlf web-mode
+            ws-butler yaml-mode yasnippet))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
