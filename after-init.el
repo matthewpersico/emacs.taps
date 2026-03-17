@@ -1,4 +1,4 @@
-;;; after-init.el --- Summary
+;;; after-init.el --- Summary -*- lexical-binding: t; -*-
 
 ;; My stuff, post Exordium
 
@@ -22,21 +22,20 @@
 ;;; OS Setup
 (defvar mop-myHome)
 (cond
- ((string-equal system-type "windows-nt")
-  (progn
-    (setq mop-myHome (concat (getenv "HOMEDRIVE") (getenv "HOMEPATH")))))
- ((string-equal system-type "gnu/linux")
-  (progn
-    (setq mop-myHome (getenv "HOME"))))
- ((string-equal system-type "darwin")
-  (progn
-    (setq mop-myHome (getenv "HOME"))
-    (when (memq window-system '(mac ns x))
+ ((eq system-type 'windows-nt)
+  (setq mop-myHome
+        (concat (getenv "HOMEDRIVE")
+                (getenv "HOMEPATH"))))
+
+ ((eq system-type 'gnu/linux)
+  (setq mop-myHome (getenv "HOME")))
+
+ ((eq system-type 'darwin)
+  (setq mop-myHome (getenv "HOME"))
+  (when (memq window-system '(mac ns x))
+    (when (require 'exec-path-from-shell nil t)
       (exec-path-from-shell-initialize)
-      (exec-path-from-shell-copy-env "HOSTNAME")
-      )
-  ))
- )
+      (exec-path-from-shell-copy-env "HOSTNAME")))))
 
 ;;; ********************
 ;;; Add the taps directory as part of the load path so that I can use
@@ -320,6 +319,7 @@
 
 (define-key flycheck-error-list-mode-map (kbd "d") #'shellcheck-disable-error-at-point)
 
+(require 'sh-script)
 ;;
 ;; Refine to remove the --shell option, from flycheck.el
 ;;
@@ -361,7 +361,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;;; only on lines you edit.
 (use-package ws-butler)
 (ws-butler-global-mode)
-(global-delete-trailing-whitespace-mode -1)
+;; no longer defined(global-delete-trailing-whitespace-mode -1)
 
 ;;; ********************
 ;;; Exordium overrides
@@ -384,9 +384,11 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;;
 
 ;;; https://bbgithub.dev.bloomberg.com/bspiers5/emacs-init/blob/master/init.el#L188
-(define-advice kill-line (before kill-line-autoreindent activate)
+(define-advice kill-line (:before (&optional arg) kill-line-autoreindent)
   "Kill excess whitespace when joining lines.
-If the next line is joined to the current line, kill the extra indent whitespace in front of the next line."
+If the next line is joined to the current line,
+kill the extra indent whitespace in front of the next line."
+  (ignore arg) ;;; Silences elisp-mode, but keep for future reference.
   (when (and (eolp) (not (bolp)))
     (save-excursion
       (forward-char 1)
@@ -411,7 +413,9 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key (kbd "S-<f12>") 'MOP-insert-function-name)
 
 (defun MOP-insert-buffer-list ()
-  "MOP - PLACEHOLDER, DOES NOT WORK YET! Insert the list of all buffer names into the buffer at the current editing point."
+  "MOP - PLACEHOLDER, DOES NOT WORK YET!
+Insert the list of all buffer names into the buffer
+at the current editing point."
   (interactive "*")
   (buffer-list t))
 
@@ -433,7 +437,9 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key "\C-xZ" 'MOP-strip-start-whitespace)
 
 (defun MOP-upcase-region-or-char (arg)
-  "If a region is selected, uppercase it.  Else, if cursor is on a -, replace it with _.  Else uppercase the current char (ARG)."
+  "If a region is selected, uppercase it.
+Else, if cursor is on a -, replace it with _.
+Else uppercase the current char (ARG)."
   (interactive "p")
   (cond ((region-active-p)
          (upcase-region (region-beginning) (region-end)))
@@ -447,7 +453,9 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key "\C-x\C-u" 'MOP-upcase-region-or-char)
 
 (defun MOP-downcase-region-or-char (arg)
-  "If a region is selected, lowercase it.  Else, if cursor is on a -, replace it with _.  Else lowercase the current char (ARG)."
+  "If a region is selected, lowercase it.
+Else, if cursor is on a -, replace it with _.
+Else lowercase the current char (ARG)."
   (interactive "p")
   (cond ((region-active-p)
          (downcase-region (region-beginning) (region-end)))
@@ -461,12 +469,23 @@ If the next line is joined to the current line, kill the extra indent whitespace
 (global-set-key "\C-x\C-l" 'MOP-downcase-region-or-char)
 
 ;; Popup buffer list on shift button 3. - FAQ
+(defun menu-list-from-buffers ()
+  "Create a list of buffer names and their associated buffers for a menu."
+  (cons "PANE" ; Menu title
+        (mapcar (lambda (e)
+                  (list (buffer-name e) e))
+                ;; Filter out internal buffers (names starting with a space)
+                (cl-remove-if (lambda (e)
+                             (string-match "\\*.*\\*" (buffer-name e)) )
+                           (buffer-list)))))
+
 (defun MOP-popup-buffer-list ()
-  "Popup buffer menu."
-  (interactive "@")
-  (run-hooks 'activate-menubar-hook)
-  (popup-menu (car (find-menu-item current-menubar '("Buffers")))))
-(define-key global-map [(shift button3)] 'MOP-popup-buffer-list)
+  "Pop up a menu to switch to a selected buffer."
+  (interactive)
+  (set-window-buffer nil
+                     ;; x-popup-menu returns the selected buffer object
+                     (car (x-popup-menu t (list "Switch To Buffer" (menu-list-from-buffers))))) )
+(keymap-global-set "S-<down-mouse-3>" #'MOP-popup-buffer-list)
 
 (defun MOP-standard-make ()
   "MOP - set the normal compile command and kick it off."
@@ -475,6 +494,8 @@ If the next line is joined to the current line, kill the extra indent whitespace
   (call-interactively 'compile))
 ;; NOT BOUND
 
+(require 'cc-cmds)
+(require 'frame)
 ;; Whipping an alien C-source file into shape.  Do bunches of
 ;; query-replaces, because most of these things benefit from the
 ;; attention of a human eyeball --- the regexps aren't perfect
@@ -488,7 +509,7 @@ If the next line is joined to the current line, kill the extra indent whitespace
   (untabify (point-min) (point-max))
 
   ; Nail trailing whitespace
-  (MOP-strip-end-whitespace)
+  (delete-trailing-whitespace)
 
   ; Puh-leeze, death to those leading commas in lists!  Make them trail correctly.
   (goto-char (point-min))
@@ -532,10 +553,10 @@ If the next line is joined to the current line, kill the extra indent whitespace
   (goto-char (point-min))
   (while (re-search-forward "^\\( *typedef[^\n]*\\)*{" nil t)
     (backward-char)
-    (redisplay-frame)                   ;So the poor bored user can see what we're up to
+    (redraw-frame)                   ;So the poor bored user can see what we're up to
     (c-indent-exp)
     (forward-char)
-    (redisplay-frame) (sleep-for 1))    ;...and what may have happened
+    (redraw-frame (selected-frame)) (sleep-for 1))    ;...and what may have happened
 
   (message "Mechanical reformat done.  Now retouch by eye.")
   )
@@ -569,29 +590,45 @@ If the next line is joined to the current line, kill the extra indent whitespace
 ;;; Make found search locations vertically center
 ;(add-hook 'isearch-mode-end-hook 'recenter-top-bottom)
 
-(define-advice
-    isearch-forward
-    (after isearch-forward-recenter activate)
-  "String to shut up flycheck." (recenter))
-(ad-activate 'isearch-forward)
+(define-advice isearch-forward (:after (&rest _))
+  "Recenter after calling isearch-forward()."
+  (recenter))
 
-(define-advice
-    isearch-backward
-    (after isearch-backward-recenter activate)
-  "String to shut up flycheck." (recenter))
-(ad-activate 'isearch-backward)
+;(define-advice
+;    isearch-forward
+;    (after isearch-forward-recenter activate)
+;  "String to shut up flycheck." (recenter))
+;(ad-activate 'isearch-forward)
 
-(define-advice
-    isearch-repeat-forward
-    (after isearch-repeat-forward-recenter activate)
-  "String to shut up flycheck." (recenter))
-(ad-activate 'isearch-repeat-forward)
+(define-advice isearch-backward (:after (&rest _))
+  "Recenter after calling isearch-backward()."
+  (recenter))
 
-(define-advice
-    isearch-repeat-backward
-    (after isearch-repeat-backward-recenter activate)
-  "String to shut up flycheck." (recenter))
-(ad-activate 'isearch-repeat-backward)
+;(define-advice
+;    isearch-backward
+;    (after isearch-backward-recenter activate)
+;  "String to shut up flycheck." (recenter))
+;(ad-activate 'isearch-backward)
+
+(define-advice isearch-repeat-forward (:after (&rest _))
+  "Recenter after calling isearch-repeat-forward()."
+  (recenter))
+
+;(define-advice
+;    isearch-repeat-forward
+;    (after isearch-repeat-forward-recenter activate)
+;  "String to shut up flycheck." (recenter))
+;(ad-activate 'isearch-repeat-forward)
+
+(define-advice isearch-repeat-backward (:after (&rest _))
+  "Recenter after calling isearch-repeat-backward()."
+  (recenter))
+
+;(define-advice
+;    isearch-repeat-backward
+;    (after isearch-repeat-backward-recenter activate)
+;  "String to shut up flycheck." (recenter))
+;(ad-activate 'isearch-repeat-backward)
 
 ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html#Interlocking
 ;; This turns off local lock files to avoid rsync issues, but my git commit hook
