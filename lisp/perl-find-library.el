@@ -1,4 +1,4 @@
-;;; perl-find-library.el --- Functions for locating perl libraries on your system
+;;; perl-find-library.el --- Functions for locating perl libraries on your system -*- lexical-binding: t; -*-
 ;;; -*- mode: emacs-lisp; indent-tabs-mode: nil -*-
 ;;
 ;; Copyright (C) 2006 by Nelson Elhage
@@ -26,7 +26,7 @@
 ;;
 ;;  The main functionality provided by this file is in the
 ;;  `perl-read-library' function, which reads the name of a perl
-;;  module from the minibuffer with completion. We also provide
+;;  module from the minibuffer with completion.  We also provide
 ;;  `perl-library-path', which turns the name of a perl library into a
 ;;  path on the system.
 ;;
@@ -36,36 +36,33 @@
 ;;  the minibuffer and finds the file corresponding to it on disk.
 
 (require 'cperl-mode)
-(require 'cl)
-
+(require 'cl-lib)
+;;; Code:
 ;; Convenience function that really ought be part of emacs to start
 ;; with, damnit.
-(defun replace-all (from to str)
-  "Replace all instances of FROM with TO in STR, and return the
-result"
-  (while (string-match from str)
-    (setq str (replace-match to t t str)))
-  str)
+(defun replace-all (fromarg toarg strarg)
+  "Replace all instances of FROMARG with TOARG in STRARG."
+  (while (string-match fromarg strarg)
+    (setq strarg (replace-match toarg t t strarg)))
+  strarg)
 
 (defvar *perl-lib-path* '() "Directories in which to find perl libraries in.")
-(defvar *perl-libraries* '() "Cache of all known perl libraries on the system")
+(defvar *perl-libraries* '() "Cache of all known perl libraries on the system.")
 
 (defun perl-rebuild-lib-path ()
-  "Compute *PERL-LIB-PATH* by invoking perl and printing the
-value of @INC"
+  "Compute *PERL-LIB-PATH* by invoking perl and printing the value of @INC."
   (setq *perl-lib-path*
-         (remove-if-not
+         (cl-remove-if-not
           (lambda (dir) (and (string-match "/" dir ) (file-exists-p dir)))
           (car
            (read-from-string
             (shell-command-to-string "perl -e '$\"=\"\\\" \\\"\"; print \"(\\\"@INC\\\")\"'"))))))
 
+(require 'find-lisp)
 (defun perl-find-all-libraries ()
-  "Compute the value of *PERL-LIBRARIES* by searching in
-*PERL-LIB-PATH* for files ending in .pod or .pm"
+  "Compute *PERL-LIBRARIES* searching *PERL-LIB-PATH* for .pod or .pm files."
   (if (not *perl-lib-path*)
       (perl-rebuild-lib-path))
-  (require 'find-lisp)
   (setq *perl-libraries*
         (mapcan
          (lambda (dir)
@@ -79,30 +76,30 @@ value of @INC"
          *perl-lib-path*)))
 
 (defun perldoc (library)
-  "Invoke `cperl-perldoc' on LIBRARY, but do completion using *PERL-LIBRARIES*
-when run interactively"
+  "Invoke `cperl-perldoc' on LIBRARY.
+Do completion using *PERL-LIBRARIES* interactively."
   (interactive
    (list (perl-read-library "Perldoc entry: ")))
   (cperl-perldoc library))
 
 ;;;###autoload
 (defun perl-find-library (library)
-  "Find a perl library by module name"
+  "Find a perl LIBRARY by module name."
   (interactive
    (list (perl-read-library "Find perl library: ")))
   (find-file (perl-library-path library)))
 (defalias 'perl-find-file 'perl-find-library)
 
 (defun perl-library-path (library)
-  "Returns the path to the perl library LIBRARY on disk."
+  "Return the path to the perl library LIBRARY on disk."
   (let ((path (shell-command-to-string (concat "perldoc -l " library))))
     ;; Strip the trailing newline
     (and path
          (substring path 0 (- (length path) 1)))))
 
 (defun perl-read-library (&optional prompt)
-  "Read the name of a perl library from the minibuffer, with
-completion."
+  "Read the name of a perl library from the minibuffer.
+Use completion if PROMPT is non nil."
   (if (not prompt)
       (setq prompt "Perl library: "))
   (if (not *perl-libraries*)
@@ -114,3 +111,4 @@ completion."
    *perl-libraries*))
 
 (provide 'perl-find-library)
+;;; perl-find-library.el ends here
