@@ -66,15 +66,15 @@
  '(package-selected-packages
    '(ac-js2 ac-rtags all-the-icons all-the-icons-nerd-fonts apache-mode
             auto-complete auto-complete-c-headers bazel bison-mode
-            bpftrace-mode caml cider clojure-mode cmake-mode company
-            company-rtags dart-mode dash debian-el default-text-scale diminish
-            dockerfile-mode dpkg-dev-el elm-mode enh-ruby-mode epl eval-sexp-fu
-            evil exec-path-from-shell expand-region f fill-column-indicator
-            flycheck-rtags fountain-mode git-gutter git-gutter-fringe git-modes
-            git-timemachine gitlab-ci-mode gnuplot go-mode goto-chg
-            graphviz-dot-mode groovy-mode haskell-mode helm-ag helm-descbinds
-            helm-flycheck helm-projectile helm-rtags helm-swoop highlight
-            highlight-symbol ido-completing-read+ iedit imenu-list
+            bpftrace-mode caml cider cl-lib cl-libify clojure-mode cmake-mode
+            company company-rtags dart-mode dash debian-el default-text-scale
+            diminish dockerfile-mode dpkg-dev-el elm-mode enh-ruby-mode epl
+            eval-sexp-fu evil exec-path-from-shell expand-region f
+            fill-column-indicator flycheck-rtags fountain-mode git-gutter
+            git-gutter-fringe git-modes git-timemachine gitlab-ci-mode gnuplot
+            go-mode goto-chg graphviz-dot-mode groovy-mode haskell-mode helm-ag
+            helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop
+            highlight highlight-symbol ido-completing-read+ iedit imenu-list
             impatient-mode inform-mode jinja2-mode js2-mode kivy-mode
             kotlin-mode lua-mode magit markdown-mode matlab-mode meson-mode
             modern-cpp-font-lock nginx-mode nlinum olivetti org-bullets ox-gfm
