@@ -384,15 +384,28 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;;
 
 ;;; https://bbgithub.dev.bloomberg.com/bspiers5/emacs-init/blob/master/init.el#L188
-(define-advice kill-line (:before (&optional arg) kill-line-autoreindent)
-  "Kill excess whitespace when joining lines.
+;;; Updated by bart
+:::
+(advice-add #'kill-line :before
+            (lambda (&rest r)
+              "Kill excess whitespace when joining lines.
 If the next line is joined to the current line,
 kill the extra indent whitespace in front of the next line."
-  (ignore arg) ;;; Silences elisp-mode, but keep for future reference.
-  (when (and (eolp) (not (bolp)))
-    (save-excursion
-      (forward-char 1)
-      (just-one-space 1))))
+              (when (and (eolp) (not (bolp)))
+                (save-excursion
+                  (forward-char 1)
+                  (just-one-space 1)))))
+
+;;; Updated by ChatGPT
+;(define-advice kill-line (:before (&optional arg) kill-line-autoreindent)
+;  "Kill excess whitespace when joining lines.
+;If the next line is joined to the current line,
+;kill the extra indent whitespace in front of the next line."
+;  (ignore arg) ;;; Silences elisp-mode, but keep for future reference.
+;  (when (and (eolp) (not (bolp)))
+;    (save-excursion
+;      (forward-char 1)
+;      (just-one-space 1))))
 
 (defun kill-other-buffers ()
   "Kill all other buffers."
