@@ -80,9 +80,9 @@
             modern-cpp-font-lock nginx-mode nlinum olivetti org-bullets ox-gfm
             page-break-lines paredit php-mode pip-requirements pkg-info po-mode
             powerline projectile protobuf-mode puppet-mode pyvenv qml-mode
-            racket-mode rainbow-delimiters rtags rust-mode s scala-mode systemd
-            treemacs-projectile unfill vala-mode virtualenvwrapper vlf web-mode
-            ws-butler yaml-mode yasnippet))
+            racket-mode rainbow-delimiters realgud rtags rust-mode s scala-mode
+            systemd treemacs-projectile unfill vala-mode virtualenvwrapper vlf
+            web-mode ws-butler yaml-mode yasnippet))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
