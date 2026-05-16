@@ -364,6 +364,14 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;; no longer defined(global-delete-trailing-whitespace-mode -1)
 
 ;;; ********************
+;;; Wrap lines in markdown
+(dolist (hook '(markdown-mode-hook gfm-mode-hook))
+  (add-hook hook
+            (lambda ()
+              (setq-local truncate-lines nil)
+              (visual-line-mode 1))))
+
+;;; ********************
 ;;; Exordium overrides
 
 ;;; None
