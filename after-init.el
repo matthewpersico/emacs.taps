@@ -15,7 +15,6 @@
 ;;12:05:54 brilliant  Thanks
 
 ;;; Code:
-
 (message "Start after-init.el")
 
 ;;; ********************
@@ -29,26 +28,28 @@
 
  ((eq system-type 'gnu/linux)
   (setq mop-myHome (getenv "HOME")))
+)
 
- ((eq system-type 'darwin)
-  (setq mop-myHome (getenv "HOME"))
-  (when (memq window-system '(mac ns x))
-    (when (require 'exec-path-from-shell nil t)
-      (exec-path-from-shell-initialize)
-      (exec-path-from-shell-copy-env "HOSTNAME")))))
+(setq enable-local-eval t)
 
 ;;; ********************
 ;;; Add the taps directory as part of the load path so that I can use
 ;;; extensions I like without interfering with Exordium
 (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/taps/" (getenv "USER") "/lisp"))
 
+;;; ********************
+;;; Flycheck
 (require 'flycheck)
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(global-set-key [f7] 'list-flycheck-errors)
+
 ;;; And since this should be the last load-path, I can set this now, since
 ;;; flycheck does not use load-path directly.  From https://stackoverflow.com/questions/20498554/how-do-i-make-flycheck-find-required-file-in-emacs-lisp
 (setq-default flycheck-emacs-lisp-load-path 'inherit)
 
 ;;; ********************
-;;; Key defs
+;;; Key definitions
 
 ;; Shift backspace is pressed more by accident than anything
 ;; else. Unassiginging it here seems to change it to delete-to-the-right. I can
@@ -135,6 +136,13 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
+;; Inverse of fill-paragraph. Useful when reading long oneline paras in
+;; markdown.
+(global-set-key (kbd "M-Q") 'unfill-paragraph)
+
+;;; ********************
+;;; Setting up the git change markers
+;;;
 (require 'fringe)
 (require 'fringe-helper)
 (fringe-helper-define 'git-gutter-fr:added nil
@@ -170,11 +178,6 @@
   "........")
 (set-face-foreground 'git-gutter-fr:deleted    "red")
 
-;;; ********************
-;;; Misc
-(global-set-key (kbd "M-Q") 'unfill-paragraph)
-
-:::
 ;;; ********************
 ;;; aliases
 (defalias 'yes-or-no-p 'y-or-n-p) ; y or n is enough
@@ -244,13 +247,82 @@
 (add-to-list 'interpreter-mode-alist '("csperl5.12" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.16" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5.32" . cperl-mode))
+
 (require 'perltidy)
 (defun cperl-mode-hook-for-perltidy ()
   "Keymaps for perltidy functions."
   (local-set-key (kbd "C-c t") 'perltidy-region)
   (local-set-key (kbd "C-c C-t") 'perltidy-buffer))
 (add-hook 'cperl-mode-hook 'cperl-mode-hook-for-perltidy)
+
 (require 'perl-find-library)
+;; Disable delete-trailing-whitespace-mode in cperl-mode buffers
+(add-hook 'cperl-mode-hook
+          (lambda ()
+            (when (fboundp 'delete-trailing-whitespace-mode)
+              (delete-trailing-whitespace-mode -1))))
+
+;; Add module/package to the modeline.
+(defun MOP-cperl-current-package ()
+  "Lexically determine the current package."
+  (save-excursion
+    (when (re-search-backward
+           "^\\s-*package\\s-+\\([A-Za-z0-9_:]+\\)"
+           nil t)
+      (match-string-no-properties 1))))
+
+(require 'which-func)
+
+(defun MOP-cperl-package-and-function ()
+  "Add the package name to the function shown on the status line."
+  (when (eq major-mode 'cperl-mode)
+    (let ((pkg (MOP-cperl-current-package))
+          (fun (which-function)))
+      (cond
+       ((and pkg fun)
+        (format "%s::%s" pkg fun))
+       (pkg pkg)
+       (fun fun)))))
+
+(setq which-func-format
+      '(:eval (MOP-cperl-package-and-function)))
+
+(which-function-mode 1)
+
+;;; GPT 5.5 2026/06/02
+(require 'cl-lib)
+;;;(defun mop-perl-disable-perlcritic-for-object-pad ()
+;;;  "Disable perlcritic in Flycheck when Object::Pad is used in the current buffer."
+;;;  (when (save-excursion
+;;;          (goto-char (point-min))
+;;;          (re-search-forward "^\\s-*use\\s-+Object::Pad\\b" nil t))
+;;;    (setq-local flycheck-disabled-checkers
+;;;                (cl-adjoin 'perl-perlcritic flycheck-disabled-checkers))
+;;;    (when (bound-and-true-p flycheck-mode)
+;;;      (flycheck-buffer))))
+
+;;;(add-hook 'perl-mode-hook #'mop-perl-disable-perlcritic-for-object-pad)
+;;;(add-hook 'cperl-mode-hook #'mop-perl-disable-perlcritic-for-object-pad)
+
+;;; EO GPT 5.5
+
+;;; Claude 4.6 2025/06/02
+;;;(defun mop-perl-disable-perlcritic-for-object-pad ()
+;;;  "Disable perl-perlcritic in Flycheck buffers that use Object::Pad."
+;;;  (when (derived-mode-p 'perl-mode 'cperl-mode)
+;;;    (if (save-excursion
+;;;          (goto-char (point-min))
+;;;          (re-search-forward "^\\s-*use\\s-+Object::Pad\\b" nil t))
+;;;        (setq-local flycheck-disabled-checkers
+;;;                    (cl-adjoin 'perl-perlcritic flycheck-disabled-checkers))
+;;;      ;; Re-enable if Object::Pad was removed from the file
+;;;      (setq-local flycheck-disabled-checkers
+;;;                  (delq 'perl-perlcritic flycheck-disabled-checkers)))))
+;;;
+;;;(add-hook 'flycheck-before-syntax-check-hook
+;;;          #'mop-perl-disable-perlcritic-for-object-pad)
+;;; EO Claude 4.6
+
 
 ;;; ********************
 ;;; Python
@@ -268,7 +340,7 @@
   :config
   (pyvenv-mode 1))
 
-;;; **********************************
+;;; ********************
 ;;; Additional file types for spelling
 (defun turn-on-flyspell () "Turn on flyspell." (flyspell-mode 1))
 (add-hook 'markdown-mode-hook 'turn-on-flyspell)
@@ -280,8 +352,8 @@
 (global-set-key [f7] 'list-flycheck-errors)
 
 ;; The following is thanks to https://github.com/flycheck/flycheck/issues/1436
-(defun shellcheck-disable-error-at-point (&optional pos)
-  "Insert a shellcheck disable directive at the current error (POS) in the code."
+(defun flycheck-disable-error-at-point (&optional pos)
+  "Insert checker-specific disable directive at the current error (POS) in the code."
   (interactive)
   (-when-let* ((error (tabulated-list-get-id pos))
                (buffer (flycheck-error-buffer error))
@@ -317,7 +389,7 @@
       ;; Re-highlight the errors
       (flycheck-error-list-highlight-errors 'preserve-pos))))
 
-(define-key flycheck-error-list-mode-map (kbd "d") #'shellcheck-disable-error-at-point)
+(define-key flycheck-error-list-mode-map (kbd "d") #'flycheck-disable-error-at-point)
 
 (require 'sh-script)
 ;;
@@ -356,12 +428,21 @@ See URL `https://github.com/koalaman/shellcheck/'."
                 :face (if supports-shell 'success '(bold warning)))))))
 
 ;;; ********************
-;;; Whitespace - Turn off delete trail on save so that PRs and quilts don't get
-;;; extraneous changes. ws-butler will remove trailing whitespace as you go,
-;;; only on lines you edit.
-(use-package ws-butler)
-(ws-butler-global-mode)
-;; no longer defined(global-delete-trailing-whitespace-mode -1)
+;;; Whitespace - ws-butler will remove trailing whitespace as you go, only on
+;;; lines you edit.
+(use-package ws-butler
+  :config
+  (setq ws-butler-keep-whitespace-before-point t)
+  :hook
+  (prog-mode . ws-butler-mode))  ; only enable in programming modes, without the save hook
+
+;;; Auto-remove of trailing whitespace is a baaaaad idea when contributing to code
+;;; bases that you do not own.
+(when (fboundp 'global-delete-trailing-whitespace-mode)
+  (global-delete-trailing-whitespace-mode -1))
+
+;; Bind manual whitespace cleanup to a key, e.g. C-c w
+(global-set-key (kbd "C-x C-z") 'delete-trailing-whitespace)
 
 ;;; ********************
 ;;; Wrap lines in markdown
@@ -372,17 +453,37 @@ See URL `https://github.com/koalaman/shellcheck/'."
               (visual-line-mode 1))))
 
 ;;; ********************
-;;; Exordium overrides
-
-;;; None
-
-;;; ********************
 ;;; File sets
 (filesets-init)
 
 ;;; ********************
 ;;; Popper
 ;;; https://www.youtube.com/watch?v=E-xUNlZi3rI
+
+;;; *******************
+;;; vterm
+(defvar vterm-shell)
+(with-eval-after-load 'vterm
+  (setq vterm-shell (let ((shell (expand-file-name "personal/bin/vterm-shell"
+                                     (getenv "HOME"))))
+        (if (file-executable-p shell)
+            shell
+          "/bin/bash"))))
+
+;;; ********************
+;;; AI
+
+;;; https://github.com/manzaltu/claude-code-ide.el#installing-the-emacs-package
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+  :config
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+
+;;; ********************
+;;; Exordium overrides
+
+;;; None
 
 ;;; ********************
 ;;; Locally created functions
@@ -433,8 +534,6 @@ at the current editing point."
   "MOP - Insert the current time into the buffer at the current editing point."
   (interactive "*")
   (insert (current-time-string)))
-
-(global-set-key "\C-x\C-z" 'delete-trailing-whitespace)
 
 (defun MOP-strip-start-whitespace ()
   "MOP - All leading whitespace gets chucked."
@@ -598,47 +697,23 @@ Else lowercase the current char (ARG)."
 (require 'sh-script-imode)
 
 ;;; Make found search locations vertically center
-;(add-hook 'isearch-mode-end-hook 'recenter-top-bottom)
+(add-hook 'isearch-mode-end-hook 'recenter-top-bottom)
 
 (define-advice isearch-forward (:after (&rest _))
   "Recenter after calling isearch-forward()."
   (recenter))
 
-;(define-advice
-;    isearch-forward
-;    (after isearch-forward-recenter activate)
-;  "String to shut up flycheck." (recenter))
-;(ad-activate 'isearch-forward)
-
 (define-advice isearch-backward (:after (&rest _))
   "Recenter after calling isearch-backward()."
   (recenter))
-
-;(define-advice
-;    isearch-backward
-;    (after isearch-backward-recenter activate)
-;  "String to shut up flycheck." (recenter))
-;(ad-activate 'isearch-backward)
 
 (define-advice isearch-repeat-forward (:after (&rest _))
   "Recenter after calling isearch-repeat-forward()."
   (recenter))
 
-;(define-advice
-;    isearch-repeat-forward
-;    (after isearch-repeat-forward-recenter activate)
-;  "String to shut up flycheck." (recenter))
-;(ad-activate 'isearch-repeat-forward)
-
 (define-advice isearch-repeat-backward (:after (&rest _))
   "Recenter after calling isearch-repeat-backward()."
   (recenter))
-
-;(define-advice
-;    isearch-repeat-backward
-;    (after isearch-repeat-backward-recenter activate)
-;  "String to shut up flycheck." (recenter))
-;(ad-activate 'isearch-repeat-backward)
 
 ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html#Interlocking
 ;; This turns off local lock files to avoid rsync issues, but my git commit hook
