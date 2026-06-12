@@ -114,7 +114,7 @@
     (let ((old-perltidy-env (getenv "PERLTIDY"))
           (remote? (tramp-tramp-file-p buffer-file-name))
           (perltidyrc (perltidy-find-perltidyrc buffer-file-truename))
-          (pertidyrc-remote (expand-file-name "perltidyrc-remote" temporary-file-directory))
+          (perltidyrc-remote (expand-file-name "perltidyrc-remote" temporary-file-directory))
           (perltidy-run-list perltidy-program-params))
 
       (if (and (bound-and-true-p remote?)
@@ -128,15 +128,15 @@
                           (list (concat "-pro=" pertidyrc-remote)))))
         ;; else
         (progn
-          (if (string-equal perltidyrc nil )
+          (if ( perltidyrc )
               (setq perltidy-run-list
                     (append perltidy-run-list
-                            (list (concat "-pro=.../.perltidyrc"))))
+                            (list (concat "-pro=" perltidyrc))))
             ;; else
             (progn
               (setq perltidy-run-list
                     (append perltidy-run-list
-                            (list (concat "-pro=" perltidyrc))))))))
+                            (list (concat "-pro=.../.perltidyrc"))))))))
       (apply #'call-process-region
              (append (list beg end perltidy-program
                            t
