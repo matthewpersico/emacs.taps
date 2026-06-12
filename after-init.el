@@ -356,6 +356,8 @@
 ;; it.
 (defun flycheck-disable-error-at-point-sh-shellcheck (id)
   "Insert shellcheck disable directive for error ID at point."
+  ;; shellcheck single line errors are at line before the error. We will insert
+  ;; the exclusion directive as its own line.
   (beginning-of-line-text)
   ;; The only error I know of where the disable directive is AFTER the
   ;; error position, not before.
@@ -376,7 +378,12 @@
   (indent-for-tab-command))
 
 (defun flycheck-disable-error-at-point (&optional pos)
-  "Insert checker disable directive at the current error (POS) in the code."
+  "Insert checker disable directive at the current error (POS) in the code.
+In order to add a new checker:
+- Run this function against a file with errors before extending.
+  That will get you the exact error checker name.
+- For error checker \='foo\=', create function
+  \='flycheck-disable-error-at-point-foo\='."
   (interactive)
   (-when-let* ((error (tabulated-list-get-id pos))
                (buffer (flycheck-error-buffer error))
