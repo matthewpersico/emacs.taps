@@ -64,25 +64,20 @@
  '(nyan-mode t)
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(ac-js2 ac-rtags all-the-icons all-the-icons-nerd-fonts apache-mode
-            auto-complete auto-complete-c-headers bazel bison-mode
-            bpftrace-mode caml cider cl-lib cl-libify clojure-mode cmake-mode
-            company company-rtags dart-mode dash debian-el default-text-scale
-            diminish dockerfile-mode dpkg-dev-el elm-mode enh-ruby-mode epl
-            eval-sexp-fu evil exec-path-from-shell expand-region f
-            fill-column-indicator flycheck-rtags fountain-mode git-gutter
-            git-gutter-fringe git-modes git-timemachine gitlab-ci-mode gnuplot
-            go-mode goto-chg graphviz-dot-mode groovy-mode haskell-mode helm-ag
-            helm-descbinds helm-flycheck helm-projectile helm-rtags helm-swoop
-            highlight highlight-symbol ido-completing-read+ iedit imenu-list
-            impatient-mode inform-mode jinja2-mode js2-mode kivy-mode
-            kotlin-mode lua-mode magit markdown-mode matlab-mode meson-mode
-            modern-cpp-font-lock nginx-mode nlinum olivetti org-bullets ox-gfm
-            page-break-lines paredit php-mode pip-requirements pkg-info po-mode
-            powerline projectile protobuf-mode puppet-mode pyvenv qml-mode
-            racket-mode rainbow-delimiters realgud rtags rust-mode s scala-mode
-            systemd treemacs-projectile unfill vala-mode virtualenvwrapper vlf
-            web-mode ws-butler yaml-mode yasnippet))
+   '(ac-js2 all-the-icons auto-complete casual claude-code-ide cmake-mode compat
+            dap-mode default-text-scale difftastic diminish docker
+            dockerfile-mode editorconfig eglot eldoc enh-ruby-mode erc
+            eval-sexp-fu expand-region faceup flycheck-package flycheck-pos-tip
+            flycheck-relint flymake forge git-gutter-fringe git-timemachine
+            goto-chg groovy-mode helm-descbinds helm-flycheck helm-lsp
+            helm-projectile helm-rg helpful idlwave ido-completing-read+ iedit
+            impatient-mode jsonrpc lsp-ui org-superstar ox-gfm page-break-lines
+            peg poly-rst powerline project python pyvenv realgud symbol-overlay
+            track-changes tramp treemacs-projectile verilog-mode
+            virtualenvwrapper vlf vterm vtm wgrep-helm which-key
+            window-tool-bar ws-butler yasnippet))
+ '(package-vc-selected-packages
+   '((claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el")))
  '(protect-buffer-bury-p nil)
  '(python-shell-exec-path '("/opt/bb/bin"))
  '(python-shell-interpreter "python3.8")
