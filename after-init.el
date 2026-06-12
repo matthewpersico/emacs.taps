@@ -353,7 +353,7 @@
 
 ;; The following is thanks to https://github.com/flycheck/flycheck/issues/1436
 (defun flycheck-disable-error-at-point (&optional pos)
-  "Insert checker-specific disable directive at the current error (POS) in the code."
+  "Insert checker disable directive at the current error (POS) in the code."
   (interactive)
   (-when-let* ((error (tabulated-list-get-id pos))
                (buffer (flycheck-error-buffer error))
@@ -373,21 +373,32 @@
           (widen)
           (goto-char pos))
 
-        ;; Move to start of line with error position.
-        (beginning-of-line-text)
+        ;; Do The Right Thing for the current checker
+        (cond
+         ((eq (flycheck-error-checker error) 'shellcheck)
+          ;; The only error I know of where the disable directive is AFTER the
+          ;; error position, not before.
+          (when (string-equal id "SC2148")
+            (forward-line))
+          ;; Insert the disable line
+          (insert (format "# shellcheck disable=%s #https://github.com/koalaman/shellcheck/wiki/%s\n" id id))
+          ;; Indent it
+          (indent-for-tab-command))
 
-        ;; The only error I know of where the disable directive is AFTER the
-        ;; error position, not before.
-        (when (string-equal id "SC2148")
-              (forward-line)
-              )
-        ;; Insert the disable line
-        (insert (format "# shellcheck disable=%s #https://github.com/koalaman/shellcheck/wiki/%s\n" id id))
-        ;; Indent it
-        (indent-for-tab-command))
+         ((eq (flycheck-error-checker error) 'perl-perlcritic)
+          ;; perlcritic single line errors are at line end
+          (end-of-line)
+
+          ;; Insert the disable line
+          (insert (format "    ## no critic (%s)" id))
+          ;; Indent it
+          (indent-for-tab-command))
+
+         (t
+          (message "No disable handler for checker %s" (flycheck-error-checker error))))
 
       ;; Re-highlight the errors
-      (flycheck-error-list-highlight-errors 'preserve-pos))))
+      (flycheck-error-list-highlight-errors 'preserve-pos)))))
 
 (define-key flycheck-error-list-mode-map (kbd "d") #'flycheck-disable-error-at-point)
 
