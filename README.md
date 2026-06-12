@@ -6,7 +6,7 @@ When setting up on a new machine
 * Clone Exordium.
 
 ```bash
-git clone https://github.com/philippe-grenet/exordium.git ~/.emacs.d
+git clone https://github.com/emacs-exordium/exordium.git ~/.emacs.d
 ```
 
 * Start emacs.
