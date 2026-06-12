@@ -351,7 +351,30 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (global-set-key [f7] 'list-flycheck-errors)
 
-;; The following is thanks to https://github.com/flycheck/flycheck/issues/1436
+;; The following is thanks to the start at
+;; https://github.com/flycheck/flycheck/issues/1436 and AI helping to extend
+;; it.
+(defun flycheck-disable-error-at-point-sh-shellcheck (id)
+  "Insert shellcheck disable directive for error ID at point."
+  (beginning-of-line-text)
+  ;; The only error I know of where the disable directive is AFTER the
+  ;; error position, not before.
+  (when (string-equal id "SC2148")
+    (forward-line))
+  ;; Insert the disable line
+  (insert (format "# shellcheck disable=%s #https://github.com/koalaman/shellcheck/wiki/%s\n" id id))
+  ;; Indent it
+  (indent-for-tab-command))
+
+(defun flycheck-disable-error-at-point-perl-perlcritic (id)
+  "Insert perlcritic disable directive for error ID at point."
+  ;; perlcritic single line errors are at line end
+  (end-of-line)
+  ;; Insert the disable line
+  (insert (format "    ## no critic (%s)" id))
+  ;; Indent it
+  (indent-for-tab-command))
+
 (defun flycheck-disable-error-at-point (&optional pos)
   "Insert checker disable directive at the current error (POS) in the code."
   (interactive)
@@ -372,33 +395,14 @@
           ;; and try again
           (widen)
           (goto-char pos))
-
         ;; Do The Right Thing for the current checker
-        (cond
-         ((eq (flycheck-error-checker error) 'shellcheck)
-          ;; The only error I know of where the disable directive is AFTER the
-          ;; error position, not before.
-          (when (string-equal id "SC2148")
-            (forward-line))
-          ;; Insert the disable line
-          (insert (format "# shellcheck disable=%s #https://github.com/koalaman/shellcheck/wiki/%s\n" id id))
-          ;; Indent it
-          (indent-for-tab-command))
-
-         ((eq (flycheck-error-checker error) 'perl-perlcritic)
-          ;; perlcritic single line errors are at line end
-          (end-of-line)
-
-          ;; Insert the disable line
-          (insert (format "    ## no critic (%s)" id))
-          ;; Indent it
-          (indent-for-tab-command))
-
-         (t
-          (message "No disable handler for checker %s" (flycheck-error-checker error))))
-
+        (let* ((checker (flycheck-error-checker error))
+               (handler (intern-soft (format "flycheck-disable-error-at-point-%s" checker))))
+          (if (and handler (fboundp handler))
+              (funcall handler id)
+            (message "No disable handler for checker %s" checker))))
       ;; Re-highlight the errors
-      (flycheck-error-list-highlight-errors 'preserve-pos)))))
+      (flycheck-error-list-highlight-errors 'preserve-pos))))
 
 (define-key flycheck-error-list-mode-map (kbd "d") #'flycheck-disable-error-at-point)
 
