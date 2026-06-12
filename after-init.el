@@ -357,7 +357,8 @@
 (defun flycheck-disable-error-at-point-sh-shellcheck (id)
   "Insert shellcheck disable directive for error ID at point."
   ;; shellcheck single line errors are at line before the error. We will insert
-  ;; the exclusion directive as its own line.
+  ;; the exclusion directive as its own line. If you want the directive to
+  ;; apply to the whole file, move it to the top of the script.
   (beginning-of-line-text)
   ;; The only error I know of where the disable directive is AFTER the
   ;; error position, not before.
@@ -369,12 +370,14 @@
   (indent-for-tab-command))
 
 (defun flycheck-disable-error-at-point-perl-perlcritic (id)
-  "Insert perlcritic disable directive for error ID at point."
-  ;; perlcritic single line errors are at line end
+  "Insert or update perlcritic disable directive for error ID at point."
   (end-of-line)
-  ;; Insert the disable line
-  (insert (format "    ## no critic (%s)" id))
-  ;; Indent it
+  (let ((line-end (point)))
+    (beginning-of-line)
+    (if (re-search-forward "## no critic (\\([^)]*\\))" line-end t)
+        (replace-match (format "%s, %s" (match-string 1) id) t t nil 1)
+      (end-of-line)
+      (insert (format "    ## no critic (%s)" id))))
   (indent-for-tab-command))
 
 (defun flycheck-disable-error-at-point (&optional pos)
