@@ -341,6 +341,12 @@
   (pyvenv-mode 1))
 
 ;;; ********************
+;;; YAML
+;; Ensure yaml-mode is available (e.g., via package manager)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+
+;;; **********************************
 ;;; Additional file types for spelling
 (defun turn-on-flyspell () "Turn on flyspell." (flyspell-mode 1))
 (add-hook 'markdown-mode-hook 'turn-on-flyspell)
@@ -748,6 +754,11 @@ Else lowercase the current char (ARG)."
 ;; This was removed from custom-set-variables because it does not seem to play
 ;; with Perl 5.16:
 ;; '(flycheck-perl-include-path (quote ("lib/perl" "../lib/perl" "")))
+
+;; Setting again so it hopefully doesn't get overritten by "simple".
+(global-set-key [f8]  'start-kbd-macro)
+(global-set-key [f9]  'end-kbd-macro)
+(global-set-key [f10] 'call-last-kbd-macro)
 
 (message "End after-init.el")
 (provide `after-init)
