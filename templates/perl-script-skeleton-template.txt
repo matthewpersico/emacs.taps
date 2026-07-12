@@ -1,0 +1,73 @@
+package <PACKAGE_NAME>
+
+# ===========================================================================
+# Pragmas
+use 5.16.0;
+use strict;
+use warnings;
+
+# ===========================================================================
+# Core and CPAN modules
+
+# None
+
+# ===========================================================================
+# Project modules
+
+# None
+
+# ===========================================================================
+# Shareable package data
+
+our $VERSION = "0.0.0";
+
+# ===========================================================================
+# Package data
+
+# None
+
+# ===========================================================================
+# Object static methods
+
+sub new ()
+{
+    my $class = shift;
+    my $self = {};
+    bless $self, $class;
+    return $self;
+}
+
+# ===========================================================================
+# Object instance methods
+
+# None
+
+1;
+
+__DATA__
+=head1 NAME
+
+<PACKAGE_NAME> - Package that does something
+
+=head1 SYNOPSIS
+
+ my $obj = <PACKAGE_NAME>->new();
+ etc...
+
+=head1 DESCRIPTION
+
+Describe in general terms what <PACKAGE_NAME> does.
+
+=head1 METHODS
+
+=over 4
+
+=item method
+
+Describe what method does.
+
+=back
+
+=cut
+
+__PODUSAGE__

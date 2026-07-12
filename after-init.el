@@ -32,6 +32,11 @@
 
 (setq enable-local-eval t)
 
+;;; *******************
+;;; Add hostname to window title
+(setq frame-title-format
+      '("emacs@" system-name " - (%f)"))
+
 ;;; ********************
 ;;; Add the taps directory as part of the load path so that I can use
 ;;; extensions I like without interfering with Exordium
@@ -43,6 +48,8 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (global-set-key [f7] 'list-flycheck-errors)
+;;; I *like* dashes in my functions
+(setq-default flycheck-disabled-checkers '(sh-posix-dash))
 
 ;;; And since this should be the last load-path, I can set this now, since
 ;;; flycheck does not use load-path directly.  From https://stackoverflow.com/questions/20498554/how-do-i-make-flycheck-find-required-file-in-emacs-lisp
@@ -510,6 +517,53 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
   (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+
+(global-set-key (kbd "C-c a c") #'claude-code-ide-menu)
+
+;;; ********************
+;;; skeleton - file templates
+
+(require 'skeleton)
+
+(defconst MOP-skeleton-base-dir
+  (file-name-directory (or load-file-name buffer-file-name)))
+
+(defconst MOP-skeleton-template-dir
+  (expand-file-name "templates" MOP-skeleton-base-dir))
+
+(defconst MOP-skeleton-template-suffix "-skeleton-template")
+
+(defun MOP-skeleton-template-files ()
+  "Return available skeleton template files."
+  (directory-files
+   MOP-skeleton-template-dir
+   nil
+   (concat (regexp-quote MOP-skeleton-template-suffix)
+           "\\(?:\\.txt\\)?\\'")))
+
+(defun MOP-skeleton-insert-template-any ()
+  "Prompt for a skeleton template and insert it."
+  (interactive)
+  (let* ((choice (completing-read
+                  "Template: "
+                  (MOP-skeleton-template-files)
+                  nil
+                  t))
+         (template-file (expand-file-name choice MOP-skeleton-template-dir))
+         (name (file-name-nondirectory
+                (or (buffer-file-name)
+                    (buffer-name))))
+         (template (with-temp-buffer
+                     (insert-file-contents template-file)
+                     (buffer-string)))
+         (template (replace-regexp-in-string
+                    "<buffer-name>" name template t t)))
+    (insert template)
+    (goto-char (point-min))
+    (when (search-forward "<cursor_here>" nil t)
+      (replace-match "" t t))))
+
+(global-set-key (kbd "C-c n t") #'MOP-skeleton-insert-template-any)
 
 ;;; ********************
 ;;; Exordium overrides

@@ -1,0 +1,121 @@
+# -*- sh -*-
+# shellcheck shell=bash
+
+# <buffer-name>
+
+# Useful function packages
+# use on_exit # Sets up traps
+# use mktemp  # Sets up and clears temp files
+
+# Stricter behaviors.
+# set -e # Exit if a command fails (-e).
+# set -u # Exit if an unset variable is referenced (-u).
+# set -o pipefail # Exit pipeline at the failed command with the failed exit code
+
+main ()
+{
+    # Set up args and options.
+    declare OPTSARGS
+    declare shortopts=''
+    declare longopts=''
+    declare orig_args="$*"
+    OPTSARGS=$(getopt -a -o "$shortopts" -l "$longopts" -n "$(basename "$0")" -- "$@") || exit
+
+    # Reset the command line ($@).
+    eval set -- "$OPTSARGS"
+
+    # Reprocess the command line, extracting options. Options stop at '-- or
+    # the first string that does not start with a -. If there are strings that
+    # are values for the options, they probably will not start with
+    # dashes. However, they are processed and shifted off before we get back to
+    # this comparison.
+    while [[ $1 =~ ^- ]] ; do
+        declare option=${1,,}
+        shift
+        [[ "$option" != '--' ]] && option=${option##-} && option=${option##-}
+        case "$option" in
+            h | help )
+                bash-usage "$0"
+                true; exit
+                ;;
+            x )
+                set -x;; # OK if you are grepping
+            -- ) break ;; ## VITAL!!! Exits the while loop, no more options,
+                          ## remaining $*, if any, are args
+            * )
+                echo "<buffer-name>: '$option' is an invalid option."
+                echo "<buffer-name>: args: '$orig_args'"
+                declare i
+                for (( i=${#BASH_SOURCE[@]}-1; i>=0; i-- )); do
+                    printf "  %s at %s:%s\n" "${FUNCNAME[i]}" "${BASH_SOURCE[i]}" "${BASH_LINENO[i]}"
+                done
+                false; exit
+                ;;
+        esac
+    done
+
+    # Process arguments here.
+    while (( $# )); do
+        : # <cursor_here>
+    done
+}
+
+# Other functions here
+
+# Execution starts here
+main "$@"
+
+# Exit here with status code returned from main.
+:<<'__PODUSAGE__'
+=head1 NAME
+
+<buffer-name> - script/command/function that does something
+
+=head1 SYNOPSIS
+
+ <buffer-name> [--option1] [ --option2 optionarg ] arg1 [arg2 ...] \
+     [fee] [dfsdfs] [sfsdfsf]
+
+=head1 DESCRIPTION
+
+Describe in general terms what <buffer-name> does.
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item arg
+
+Describe what arg does, should be, etc. Add a new =item for each distinct arg.
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item --option1
+
+Describe what --option1 does.
+
+=item --option2
+
+Describe what --option2 does. Describe what optionarg does.
+
+=over 2
+
+=item *
+
+A choice for optionarg
+
+=item *
+
+Another choice for optionarg
+
+=back
+
+=back
+
+=cut
+
+__PODUSAGE__
